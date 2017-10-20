@@ -1,0 +1,7 @@
+title Junction control system
+
+Controller->+TrackOut: exit(Track)
+TrackOut->TrackOut: setTrain(0)
+TrackOut->-Controller: 
+
+
