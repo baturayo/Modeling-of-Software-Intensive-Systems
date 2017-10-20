@@ -1,0 +1,49 @@
+title Junction control system
+
+TrackOut->+TrackOut: setTrain(0)
+TrackOut->+Controller: exit(TrackOut)
+Controller->+Light1: setLight(GREEN)
+Light1->-Controller:
+Controller->-TrackOut:
+deactivate TrackOut
+
+TrackIn1->+TrackIn1: setTrain(0)
+TrackIn1->+Controller: exit(TrackIn1)
+Controller->+Light1: setLight(RED)
+Light1->-Controller:
+Controller->TrackIn1:
+deactivate TrackIn1
+deactivate Controller
+
+TrackOut->+TrackOut: setTrain(FirstTrain)
+TrackOut->+Controller: enter(FirstTrain, TrackOut)
+Controller->-TrackOut: 
+deactivate TrackOut
+
+
+TrackOut->+TrackOut: setTrain(0)
+TrackOut->+Controller: exit(TrackOut)
+Controller->+Light2: setLight(GREEN)
+Light2->-Controller:
+Controller->-TrackOut: 
+deactivate TrackOut
+
+
+TrackIn2->+TrackIn2: setTrain(0)
+TrackIn2->+Controller: exit(TrackIn2)
+Controller->+Light2: setLight(RED)
+Light2->-Controller:
+Controller->TrackIn2:
+deactivate TrackIn2
+deactivate Controller
+
+TrackOut->+TrackOut: setTrain(SecondTrain)
+TrackOut->+Controller: enter(SecondTrain, TrackOut)
+Controller->-TrackOut: 
+deactivate TrackOut
+
+
+TrackOut->+TrackOut: setTrain(0)
+TrackOut->+Controller: exit(TrackOut)
+Controller->-TrackOut: 
+deactivate TrackOut
