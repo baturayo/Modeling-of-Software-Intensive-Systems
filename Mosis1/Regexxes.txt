@@ -1,0 +1,4 @@
+((([^X].*)|(X [23]))\n*)(X 1\n# Train entered segment 3\nE 3)([^GX 3].*\n)*(X 3\n)((([^X].*)|(X [23]))\n)*
+
+
+(E 1 (everything except G 1) E 2) (everything except G 1 & G 2) (G 1 X 1) G 2     |     (E 2 (everything except G 2) E 1) (everything except G 1 & G 2) (G 2 X 2) G 1
