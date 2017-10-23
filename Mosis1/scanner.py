@@ -5,8 +5,8 @@
 #
 import string
 
-False = 0
-True  = 1
+#False = 0
+#True  = 1
 
 # trace FSA dynamics (True | False)
 __trace__ = False 
@@ -26,7 +26,6 @@ class Scanner:
   self.stream = stream
 
  def scan(self):
-
   self.current_state=self.transition(self.current_state, None)
 
   if __trace__:
