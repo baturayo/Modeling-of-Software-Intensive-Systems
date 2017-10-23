@@ -35,7 +35,6 @@ class Scanner:
   while 1:
     # look ahead at the next character in the input stream
     next_char = self.stream.showNextChar()
-
     # stop if this is the end of the input stream
     if next_char == None: break
 

@@ -9,7 +9,7 @@ class Case3Scanner(Scanner):
     Scanner.__init__(self, stream)
 
     # define accepting states
-    self.accepting_states=["S3"]
+    self.accepting_states=["Init", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]
    
    
   def transition(self, state, input):
@@ -19,48 +19,82 @@ class Case3Scanner(Scanner):
 
    if state == None:
       # new state
-      return "S1"
-   elif state == "S1":
-    if input  == '.':
-      # new state
-      return "S3"
-    elif '0' <= input <= '9':
-      # new state
-      return "S1"
-    else:
-      return None
-
-   elif state == "S2":
-    if '0' <= input <= '9':
+      return "Init"
+	  
+   elif state == "Init":
+    if input  == 'E':
       # new state
       return "S2"
-    elif string.lower(input)  == 'e':
-      # action
-      self.exp = 1
-      # new state
-      return "S5"
     else:
-      return None
+      return "Init"
 
-   elif state == "S3":
-    if '0' <= input <= '9':
+   elif state == "S2":
+    if input == " ":
       # new state
       return "S3"
     else:
-      return None
+      return "Init"
+	  
+   elif state == "S3":
+    if input == '3':
+      # new state
+      return "S4"
+    else:
+      return "Init"
+	  
+   elif state == "S4":
+    if input == '\n':
+       return "S5"
+    else:
+      return "Init"
+	  
+   elif state == "S5":
+    if input == 'G':
+      return "ERROR"
+    elif input  == 'X':
+      return "S6"
+    else:
+	  return "S5"
 
-   else:
-    return None
+   elif state == "S6":
+    if input == " ":
+      # new state
+      return "S7"
+    else:
+      return "S5"
 	
+   elif state == "S7":
+    if input == '3':
+      # new state
+      return "S8"
+    else:
+      return "S5"
+	  
+   elif state == "S8":
+    if input == '\n':
+      # new state
+      return "Init"
+    else:
+      return "S5"
+	  
+   elif state == "ERROR":
+    return "ERROR"
+	  
+   else:
+	return None
+	  
+	  
   def entry(self, state, input):
     pass
 	
 def main():
-  stream = charstream.CharacterStream("123.456")
+  f = open("trace.txt", 'r')
+  inputstring = f.read()
+  stream = charstream.CharacterStream(inputstring)
   scanner = Case3Scanner(stream)
   result = scanner.scan()
   if result:
-    print ">> recognized " + stream.__str__()
+    print ">> recognized "
     print ">> committing"
     stream.commit()
   else:
