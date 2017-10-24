@@ -87,11 +87,10 @@ def main():
     scanner = UseCase4Scanner(stream)
     result = scanner.scan()
     if result:
-        print ">> recognized "
-        print ">> committing"
+        print ">> Correct "
         stream.commit()
     else:
-        print ">> rejected"
+        print ">> Violation"
 
 
 if __name__ == "__main__":

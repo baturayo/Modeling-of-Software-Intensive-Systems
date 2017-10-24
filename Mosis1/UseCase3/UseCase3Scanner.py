@@ -89,16 +89,16 @@ class Case3Scanner(Scanner):
 	
 def main():
   f = open("trace.txt", 'r')
+  #f = open("FaultiveTrace.txt", 'r')
   inputstring = f.read()
   stream = charstream.CharacterStream(inputstring)
   scanner = Case3Scanner(stream)
   result = scanner.scan()
   if result:
-    print ">> recognized "
-    print ">> committing"
+    print ">> Correct "
     stream.commit()
   else:
-    print ">> rejected"
+    print ">> Violation"
 
   
 if __name__ == "__main__":
