@@ -9,7 +9,7 @@ class UseCase4Scanner(Scanner):
         Scanner.__init__(self, stream)
 
         # define accepting states
-        self.accepting_states = ["Init", "S1", "S2", "S4", "S5"]
+        self.accepting_states = ["S3", "S6"]
 
     def transition(self, state, input):
         """
@@ -79,7 +79,8 @@ class UseCase4Scanner(Scanner):
 
 
 def main():
-    f = open("trace.txt", 'r')
+    #f = open("trace.txt", 'r')
+    f = open("traceCorrect.txt", 'r')
     inputstring = f.read()
     dummyLine = ("dummy\n")
     inputstring = dummyLine + inputstring
@@ -87,10 +88,10 @@ def main():
     scanner = UseCase4Scanner(stream)
     result = scanner.scan()
     if result:
-        print ">> Correct "
-        stream.commit()
+        print ">> Violation "
     else:
-        print ">> Violation"
+        print ">> Correct"
+        stream.commit()
 
 
 if __name__ == "__main__":
