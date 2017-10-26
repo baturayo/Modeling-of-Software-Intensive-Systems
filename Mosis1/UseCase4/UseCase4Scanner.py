@@ -79,8 +79,8 @@ class UseCase4Scanner(Scanner):
 
 
 def main():
-    #f = open("trace.txt", 'r')
-    f = open("traceCorrect.txt", 'r')
+    f = open("trace.txt", 'r')
+    #f = open("traceCorrect.txt", 'r')
     inputstring = f.read()
     dummyLine = ("dummy\n")
     inputstring = dummyLine + inputstring
