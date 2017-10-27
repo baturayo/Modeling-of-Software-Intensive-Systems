@@ -155,7 +155,7 @@ class NegatorBlock(BaseBlock):
 
     def compute(self, curIteration):
         # TO IMPLEMENT/ implemented
-        self.appendToSignal(-self.getInputSignal(curIteration, "IN1"))
+        self.appendToSignal(-self.getInputSignal(curIteration, "IN1").value)
 
 class InverterBlock(BaseBlock):
     """
@@ -166,7 +166,7 @@ class InverterBlock(BaseBlock):
 
     def compute(self, curIteration):
         # TO IMPLEMENT/ implemented
-        self.appendToSignal(1/self.getInputSignal(curIteration, "IN1"))
+        self.appendToSignal(1/self.getInputSignal(curIteration, "IN1").value)
 
 class AdderBlock(BaseBlock):
     """
@@ -179,7 +179,7 @@ class AdderBlock(BaseBlock):
     # TO IMPLEMENT/ implemented
         firstin = self.getInputSignal(curIteration, "IN1")
         secondin = self.getInputSignal(curIteration, "IN2")
-        self.appendToSignal(firstin+secondin, "OUT1")
+        self.appendToSignal(firstin.value+secondin.value, "OUT1")
 
 class ProductBlock(BaseBlock):
     """
@@ -210,8 +210,9 @@ class GenericBlock(BaseBlock):
         return self.__block_operator
 
     def compute(self, curIteration):
-        # TO IMPLEMENT
-        pass
+        firstin = self.getInputSignal(curIteration, "IN1").value
+        self.appendToSignal(eval("math." + self.getBlockOperator() + "(firstin)"), "OUT1")
+
 
     def __repr__(self):
         repr = BaseBlock.__repr__(self)
@@ -230,7 +231,9 @@ class RootBlock(BaseBlock):
 
     def compute(self, curIteration):
         # TO IMPLEMENT
-        pass
+        firstin = self.getInputSignal(curIteration, "IN1")
+        secondin = self.getInputSignal(curIteration, "IN2")
+        self.appendToSignal(firstin.value**(1/float(secondin.value)), "OUT1")
 
 class ModuloBlock(BaseBlock):
     """
@@ -241,7 +244,9 @@ class ModuloBlock(BaseBlock):
 
     def compute(self, curIteration):
         # TO IMPLEMENT
-        pass
+        firstin = self.getInputSignal(curIteration, "IN1")
+        secondin = self.getInputSignal(curIteration, "IN2")
+        self.appendToSignal(firstin.value%secondin.value, "OUT1")
 
 class DelayBlock(BaseBlock):
     """
@@ -258,18 +263,16 @@ class DelayBlock(BaseBlock):
         if curIteration == 0:
             return [self.getBlockConnectedToInput("IC")[0]]
         else:
-            return [self.getBlockConnectedToInput("IN1")[0]]
+            return []
 
     def compute(self, curIteration):
         #TO IMPLEMENT
         if curIteration == 0:
-            self.__values.append(self.getInputSignal(curIteration, "IC"))
+            self.__values.append(self.getInputSignal(curIteration, "IC").value)
             self.appendToSignal(self.getInputSignal(curIteration, "IC").value)
         else:
+            self.__values.append(self.getInputSignal(curIteration-1, "IN1").value)
             self.appendToSignal(self.__values[-1])
-            self.__values.append(self.getInputSignal(curIteration, "IN1"))
-
-        self.appendToSignal(self.__values[-1], "OUT1")
 
 class InputPortBlock(BaseBlock):
     """
@@ -538,6 +541,7 @@ class CBD(BaseBlock):
             if curIteration < 2:
                 depGraph = self.__createDepGraph(curIteration)
                 sortedGraph = depGraph.getStrongComponents(curIteration)
+
             self.__step(depGraph, sortedGraph, curIteration)
 
     def __step(self, depGraph, sortedGraph, curIteration):
@@ -560,21 +564,21 @@ class CBD(BaseBlock):
             depGraph.addMember(block)
 
         #Copy of blocks used to get sub-model dependencies aswell
-        blockcopy = self.getBlocks()
+        blockcopy = list(self.getBlocks())
 
         while len(blockcopy) != 0:
             #Get last block in list and remove this block from list
             block = blockcopy[-1]
-            del blockcopy[-1]
 
             #Get dependencies of block
             depBlocks = block.getDependencies(curIteration)
             for depBlock in depBlocks:
                 depGraph.setDependency(block, depBlock, curIteration)
 
+            del blockcopy[-1]
             #If block is a cbd, add subblocks to blockcopy
             if isinstance(block, CBD):
-                blockcopy += block.getBlocks()
+                blockcopy += list(block.getBlocks())
 
         # hints: use depGraph.setDependency(block, block_it_depends_on)
         #        use the getDependencies that is implemented in each specific block.
@@ -617,9 +621,10 @@ class CBD(BaseBlock):
         If the loop is linear return True
         Else: call exit(1) to exit the simulation with exit code 1
         """
-        return True
         #TO IMPLEMENT
+        return True
         pass
+
 
     def __constructLinearInput(self, strongComponent, curIteration):
         """
