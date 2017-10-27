@@ -31,7 +31,7 @@ class BaseBlock:
 
         #The list of possible input ports
         self.__nameLinks = input_ports
-        #In wich CBD the baseblock is situated
+        #In which CBD the baseblock is situated
         self._parent = None
 
     def getBlockName(self):
@@ -70,7 +70,10 @@ class BaseBlock:
 
     def getDependencies(self, curIteration):
         # TO IMPLEMENT: this is a helper function you can use to create the dependency graph...
-        pass
+        returnvalue = []
+        for value in self.__nameLinks:
+            returnvalue.append(self.getBlockConnectedToInput(value)[0])
+        return returnvalue
 
     def getBlockConnectedToInput(self, input_port):
         return self._linksIn[input_port]
@@ -136,8 +139,9 @@ class ConstantBlock(BaseBlock):
         self.__value = value
 
     def compute(self, curIteration):
-        # TO IMPLEMENT
-        pass
+        # TO IMPLEMENT/ implemented
+        # Update signal value because maybe the value of the constant can be changed (Revise later on)
+        self.appendToSignal(self.__value)
 
     def __repr__(self):
         return BaseBlock.__repr__(self) + "  Value = " + str(self.getValue()) + "\n"
@@ -150,8 +154,8 @@ class NegatorBlock(BaseBlock):
         BaseBlock.__init__(self, block_name, ["IN1"], ["OUT1"])
 
     def compute(self, curIteration):
-        # TO IMPLEMENT
-        pass
+        # TO IMPLEMENT/ implemented
+        self.appendToSignal(-self.getInputSignal(curIteration, "IN1"))
 
 class InverterBlock(BaseBlock):
     """
@@ -161,8 +165,8 @@ class InverterBlock(BaseBlock):
         BaseBlock.__init__(self, block_name, ["IN1"], ["OUT1"])
 
     def compute(self, curIteration):
-        # TO IMPLEMENT
-        pass
+        # TO IMPLEMENT/ implemented
+        self.appendToSignal(1/self.getInputSignal(curIteration, "IN1"))
 
 class AdderBlock(BaseBlock):
     """
@@ -172,8 +176,10 @@ class AdderBlock(BaseBlock):
         BaseBlock.__init__(self, block_name, ["IN1", "IN2"], ["OUT1"])
 
     def	compute(self, curIteration):
-    # TO IMPLEMENT
-        pass
+    # TO IMPLEMENT/ implemented
+        firstin = self.getInputSignal(curIteration, "IN1")
+        secondin = self.getInputSignal(curIteration, "IN2")
+        self.appendToSignal(firstin+secondin, "OUT1")
 
 class ProductBlock(BaseBlock):
     """
@@ -183,8 +189,10 @@ class ProductBlock(BaseBlock):
         BaseBlock.__init__(self, block_name, ["IN1", "IN2"], ["OUT1"])
 
     def	compute(self, curIteration):
-        # TO IMPLEMENT
-        pass
+        # TO IMPLEMENT/Implemented
+        firstin = self.getInputSignal(curIteration, "IN1")
+        secondin = self.getInputSignal(curIteration, "IN2")
+        self.appendToSignal(firstin.value*secondin.value, "OUT1")
 
 class GenericBlock(BaseBlock):
     """
@@ -247,11 +255,21 @@ class DelayBlock(BaseBlock):
     def getDependencies(self, curIteration):
         # TO IMPLEMENT: This is a helper function you can use to create the dependency graph
         # Treat dependencies differently. For instance, at the first iteration (curIteration == 0), the block only depends on the IC;
-        pass
+        if curIteration == 0:
+            return [self.getBlockConnectedToInput("IC")[0]]
+        else:
+            return [self.getBlockConnectedToInput("IN1")[0]]
 
     def compute(self, curIteration):
         #TO IMPLEMENT
-        pass
+        if curIteration == 0:
+            self.__values.append(self.getInputSignal(curIteration, "IC"))
+            self.appendToSignal(self.getInputSignal(curIteration, "IC").value)
+        else:
+            self.appendToSignal(self.__values[-1])
+            self.__values.append(self.getInputSignal(curIteration, "IN1"))
+
+        self.appendToSignal(self.__values[-1], "OUT1")
 
 class InputPortBlock(BaseBlock):
     """
@@ -536,6 +554,28 @@ class CBD(BaseBlock):
         blocks = self.getBlocks()
         depGraph = DepGraph()
         # TO IMPLEMENT
+
+        #Add each block
+        for block in blocks:
+            depGraph.addMember(block)
+
+        #Copy of blocks used to get sub-model dependencies aswell
+        blockcopy = self.getBlocks()
+
+        while len(blockcopy) != 0:
+            #Get last block in list and remove this block from list
+            block = blockcopy[-1]
+            del blockcopy[-1]
+
+            #Get dependencies of block
+            depBlocks = block.getDependencies(curIteration)
+            for depBlock in depBlocks:
+                depGraph.setDependency(block, depBlock, curIteration)
+
+            #If block is a cbd, add subblocks to blockcopy
+            if isinstance(block, CBD):
+                blockcopy += block.getBlocks()
+
         # hints: use depGraph.setDependency(block, block_it_depends_on)
         #        use the getDependencies that is implemented in each specific block.
         #
@@ -577,6 +617,7 @@ class CBD(BaseBlock):
         If the loop is linear return True
         Else: call exit(1) to exit the simulation with exit code 1
         """
+        return True
         #TO IMPLEMENT
         pass
 

@@ -1,0 +1,9 @@
+
+digraph graphname {
+ OutEven [label="OutputPortBlock (OutEven)"];
+double -> OutEven [label=" / OutDouble"];
+counter [label="Counter (counter)",shape=Msquare];
+double [label="Double (double)",shape=Msquare];
+counter -> double [label="InNumber / OutCount"];
+
+}

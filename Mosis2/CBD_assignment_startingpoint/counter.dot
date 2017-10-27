@@ -1,0 +1,14 @@
+
+digraph graphname {
+ OutCount [label="OutputPortBlock (OutCount)"];
+delay -> OutCount [label=""];
+delay [label="DelayBlock (delay)"];
+zero -> delay [label="IC"];
+sum -> delay [label=""];
+sum [label="AdderBlock (sum)"];
+delay -> sum [label=""];
+one -> sum [label=""];
+zero [label="ConstantBlock (zero)\n0.0"];
+one [label="ConstantBlock (one)\n1.0"];
+
+}

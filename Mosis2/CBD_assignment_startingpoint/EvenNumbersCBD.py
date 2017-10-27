@@ -64,6 +64,7 @@ cbd.run(10)
 times = []
 output = []
 
+print(cbd.getSignal("OutEven"))
 for timeValuePair in cbd.getSignal("OutEven"):
     times.append(timeValuePair.time)
     output.append(timeValuePair.value)
