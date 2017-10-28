@@ -18,5 +18,6 @@ constant = ConstantBlock(block_name="zero", value=5.0)
 
 inventer.linkInput(constant, None, None)
 inventer.compute(0)
+draw(cbd, "number_gen.dot")
 
 

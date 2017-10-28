@@ -1,0 +1,26 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+\(Constant.OUT1^{[s+1]} = 5;\)\\
+\(Constant2.OUT1^{[s+1]} = 2;\)\\
+\(Negator.IN1^{[s+1]} = Constant.OUT1^{[s+1]};\)\\
+\(Negator.OUT1^{[s+1]} = -Negator.IN1^{[s+1]};\)\\
+\(Inverter.IN1^{[s+1]} = Negator.OUT1^{[s+1]};\)\\
+\(Inverter.OUT1^{[s+1]} = \dfrac{1}{Inverter.IN1^{[s+1]}};\)\\
+\(Adder.IN1^{[s+1]} = Inverter.OUT1^{[s+1]};\)\\
+\(Adder.IN2^{[s+1]} = Constant.OUT1^{[s+1]};\)\\
+\(Adder.OUT1^{[s+1]} = Adder.IN1^{[s+1]} + Adder.IN2^{[s+1]};\)\\
+\(Product.IN1^{[s+1]} = Adder.OUT1^{[s+1]};\)\\
+\(Product.IN2^{[s+1]} = Constant.OUT1^{[s+1]};\)\\
+\(Product.OUT1^{[s+1]} = Product.IN1^{[s+1]} * Product.IN2^{[s+1]};\)\\
+\(Generic.IN1^{[s+1]} = Product.OUT1^{[s+1]};\)\\
+\(Generic.OUT1^{[s+1]} = sin(Generic.IN1)^{[s+1]}\)\\
+\(Root.IN1^{[s+1]} = Generic.OUT1^{[s+1]};\)\\
+\(Root.IN2^{[s+1]} = Constant2.OUT1^{[s+1]};\)\\
+\(Root.OUT1^{[s+1]} = \sqrt[Root.IN2]{Root.IN1}^{[s+1]};\)\\
+\(Modulo.IN1^{[s+1]} = Root.OUT1^{[s+1]};\)\\
+\(Modulo.IN2^{[s+1]} = Constant.OUT1^{[s+1]};\)\\
+\(Modulo.OUT1^{[s+1]} = Modulo.IN1^{[s+1]} \% Modulo.OUT1^{[s+1]};\)\\
+\(Delay.OUT1^{[s+1]} = Delay.IN1^{[s]};\)\\
+\(Delay.OUT1^{[0]} = Delay.IN2^{[s+1]};\)\\
+\end{document}
