@@ -140,7 +140,6 @@ class ConstantBlock(BaseBlock):
 
     def compute(self, curIteration):
         # TO IMPLEMENT/ implemented
-        # Update signal value because maybe the value of the constant can be changed (Revise later on)
         self.appendToSignal(self.__value)
 
     def __repr__(self):

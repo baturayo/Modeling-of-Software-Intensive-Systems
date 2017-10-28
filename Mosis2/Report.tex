@@ -1,6 +1,45 @@
 \documentclass{article}
+\title{Algebraic Causal Block Diagrams}
+\author{Baturay Ofluoglu\\Ken Bauwens}
 
+\usepackage{amsmath}
 \begin{document}
+\maketitle
+\pagebreak
+\section{Discrete Time CBD simulator}
+\subsection{getDependencies}
+The getDependencies function of the basicBlock simply returns a list of blocks connected to the input ports of the basicBlock.
+\subsection{Compute functions}
+The computefunctions will generally take the input signals and execute a computation on these signals. It will then add the result to its own outputsignal. The ConstantBlock does not take an input, and will repeatedly add its constant value to its signal. The genericBlock uses the python function \textit{eval} to evaluate whatever function the user assigned to the block as long as the function is known by python and it is written correctly. Correctly means without braces or parameters. For example, the sinus-function would be written as \textit{sin}, not as \textit{sin()} or \textit{sin(x)}.
+\subsection{getDependendies DelayBlock}
+The dependencies of the delayblock change during the execution. During the first iteration, the block is dependent on its IC. After this first iteration, it is dependent on nothing. 
+\subsection{\_\_createDepGraph}
+The \_\_createDepGraph function will first add all blocks to the dependencygraph. It will then go over all blocks and use the previously defined getdependencies function to add this blok's dependencies to the graph. We have to take care of sub-models. To do this, we keep a list containing all blocks in the current "level". Whenever we encounter a sub-model, we add all blocks inside of this sub-model to the list. Whenever we add the dependencies for a certain block to the graph, we remove this block from the list. All blocks and their dependencies will be added when the list is empty.
+\subsection{\_\_isLinear}
 
-Hello World!
+\section{CBD Simulator}
+\section{Discrete Time CBD Denotational Semantics}
+The latex writer will follow a few steps. In what follows we use the following conventions:
+\[x^{n} = the\ signal\ at\ port\ x\ during\ iteration\ n\]
+\[Input1,\ Input2\ =\ Input\ ports\ with\ a\ unique\ id\]
+\[Output\ =\ Output\ port\ with\ unique\ id\]
+ It will first describe all connections between blocks. These will be written as follows:
+\[Input1^{i+1} = Output^{i+1}\]
+Then it will add equations for each elementary block. The equations are:
+\[Constant:\ Output^{i+1} = c\]
+\[Negation:\ Output^{i+1} = -Input1^{i+1}\]
+\[Inverse:\ Output^{i+1} = 1/Input1^{i+1}\]
+\[Sum:\ Output^{i+1}=Input1^{i+1}+Input2^{i+1}\]
+\[Product:\ Output^{i+1}=Input1^{i+1}*Input2^{i+1}\]
+\[Generic:\ Output^{i+1}=Function(Input1^{i+1})\]
+\[Root:\ Output^{i+1}=\sqrt[Input2^{i+1}]{Input1^{i+1}}\]
+\[Modulo:\ Output^{i+1}=Input1^{i+1}\%Input2^{i+1}\]
+\[
+ Delay = 
+  \begin{cases} 
+    Output^{0} = IC^{0}\\
+    Output^{i+1} = Input1^{i}
+  \end{cases}
+\]
+
 \end{document}

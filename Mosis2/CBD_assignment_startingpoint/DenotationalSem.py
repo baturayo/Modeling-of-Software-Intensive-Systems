@@ -93,7 +93,7 @@ class DenotSem:
 
     def addDelay(self, Input, IC, Output):
         self.equations.append(Output + "^{[s+1]} = " + Input + "^{[s]};")
-        self.equations.append(Output + "^{[0]} = " + IC + "^{[s+1]};")
+        self.equations.append(Output + "^{[0]} = " + IC + "^{[0]};")
 
     def writeToLatex(self, outputName):
         #Write the stored equations to a latex file
@@ -104,41 +104,12 @@ class DenotSem:
 
         file.write("\end{document}")
 
-def createLatex(CBD):
+def createLatex(CBD, output):
     #Flatten the cbd first
     CBD.flatten()
     semantics = DenotSem()
-
-class LatexExample(CBD):
-    def __init__(self, block_name):
-        CBD.__init__(self,
-                     block_name,
-                     input_ports=[],
-                     output_ports=[])
-
-        self.addBlock(ConstantBlock(block_name="Constant", value=5))
-        self.addBlock(ConstantBlock(block_name="Constant2", value=2))
-        self.addBlock(NegatorBlock(block_name="Negator"))
-        self.addBlock(InverterBlock(block_name="Inverter"))
-        self.addBlock(AdderBlock(block_name="Adder"))
-        self.addBlock(ProductBlock(block_name="Product"))
-        self.addBlock(GenericBlock(block_name="Generic", block_operator="sin"))
-        self.addBlock(RootBlock(block_name="Root"))
-        self.addBlock(ModuloBlock(block_name="Modulo"))
-        self.addBlock(DelayBlock(block_name="Delay"))
-
-        self.addConnection("Constant", "Negator")
-        self.addConnection("Negator", "Inverter")
-        self.addConnection("Inverter", "Adder", "IN1")
-        self.addConnection("Constant", "Adder", "IN2")
-        self.addConnection("Adder", "Product", "IN1")
-        self.addConnection("Constant", "Product", "IN2")
-        self.addConnection("Product", "Generic")
-        self.addConnection("Generic", "Root", "IN1")
-        self.addConnection("Constant2", "Root", "IN2")
-        self.addConnection("Root", "Modulo", "IN1")
-        self.addConnection("Constant", "Modulo", "IN2")
-
+    semantics.evalCBD(CBD)
+    semantics.writeToLatex(output)
 
 
 cbd = LatexExample("CBD")
