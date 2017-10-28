@@ -628,8 +628,6 @@ class CBD(BaseBlock):
                 in2 = block.getBlockConnectedToInput("IN2")[0]
                 if in1 in strongComponent and in2 in strongComponent:
                     return False
-            elif block.getBlockType() == "RootBlock":
-                return False
 
         return True
 
