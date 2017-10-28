@@ -622,8 +622,16 @@ class CBD(BaseBlock):
         Else: call exit(1) to exit the simulation with exit code 1
         """
         #TO IMPLEMENT
+        for block in strongComponent:
+            if block.getBlockType() == "ProductBlock":
+                in1 = block.getBlockConnectedToInput("IN1")[0]
+                in2 = block.getBlockConnectedToInput("IN2")[0]
+                if in1 in strongComponent and in2 in strongComponent:
+                    return False
+            elif block.getBlockType() == "RootBlock":
+                return False
+
         return True
-        pass
 
 
     def __constructLinearInput(self, strongComponent, curIteration):
