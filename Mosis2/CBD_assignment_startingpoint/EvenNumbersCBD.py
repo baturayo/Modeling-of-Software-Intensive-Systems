@@ -31,7 +31,6 @@ class Double(CBD):
                      output_ports=["OutDouble"])
         self.addBlock(ProductBlock(block_name="mult"))
         self.addBlock(ConstantBlock(block_name="two", value=2.0))
-        
         self.addConnection("InNumber", "mult")
         self.addConnection("two", "mult")
         self.addConnection("mult", "OutDouble")

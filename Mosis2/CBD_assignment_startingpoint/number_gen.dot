@@ -1,25 +1,9 @@
 
 digraph graphname {
- Constant [label="ConstantBlock (Constant)\n5"];
-Constant2 [label="ConstantBlock (Constant2)\n2"];
-Negator [label="NegatorBlock (Negator)"];
-Constant -> Negator [label=""];
-Inverter [label="InverterBlock (Inverter)"];
-Negator -> Inverter [label=""];
-Adder [label="AdderBlock (Adder)"];
-Inverter -> Adder [label=""];
-Constant -> Adder [label=""];
-Product [label="ProductBlock (Product)"];
-Adder -> Product [label=""];
-Constant -> Product [label=""];
-Generic [label="GenericBlock (Generic)"];
-Product -> Generic [label=""];
-Root [label="RootBlock (Root)"];
-Generic -> Root [label=""];
-Constant2 -> Root [label=""];
-Modulo [label="ModuloBlock (Modulo)"];
-Root -> Modulo [label=""];
-Constant -> Modulo [label=""];
-Delay [label="DelayBlock (Delay)"];
+ OutEnergy [label="OutputPortBlock (OutEnergy)"];
+multiplication -> OutEnergy [label=" / OutMult"];
+counter [label="Counter (counter)",shape=Msquare];
+multiplication [label="Multiplication (multiplication)",shape=Msquare];
+counter -> multiplication [label="InNumber / OutCount"];
 
 }
