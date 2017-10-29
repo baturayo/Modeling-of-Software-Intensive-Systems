@@ -1,9 +1,9 @@
 
 digraph graphname {
- OutEnergy [label="OutputPortBlock (OutEnergy)"];
-multiplication -> OutEnergy [label=" / OutMult"];
+ OutEven [label="OutputPortBlock (OutEven)"];
+double -> OutEven [label=" / OutDouble"];
 counter [label="Counter (counter)",shape=Msquare];
-multiplication [label="Multiplication (multiplication)",shape=Msquare];
-counter -> multiplication [label="InNumber / OutCount"];
+double [label="Double (double)",shape=Msquare];
+counter -> double [label="InNumber / OutCount"];
 
 }

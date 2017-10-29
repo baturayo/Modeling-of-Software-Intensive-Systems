@@ -1,7 +1,6 @@
 \documentclass{article}
 \title{\vspace{60mm}\textbf{Algebraic Causal Block Diagrams}}
 \author{Ken Bauwens 20143225\\and Baturay Ofluoglu 20174797\\}
-\author{Baturay Ofluoglu\\Ken Bauwens}
 
 \usepackage{amsmath}
 \usepackage{outline}
@@ -22,8 +21,13 @@ The dependencies of the delayblock change during the execution. During the first
 \subsection{\_\_createDepGraph}
 The \_\_createDepGraph function will first add all blocks to the dependencygraph. It will then go over all blocks and use the previously defined getdependencies function to add this blok's dependencies to the graph. We have to take care of sub-models. To do this, we keep a list containing all blocks in the current "level". Whenever we encounter a sub-model, we add all blocks inside of this sub-model to the list. Whenever we add the dependencies for a certain block to the graph, we remove this block from the list. All blocks and their dependencies will be added when the list is empty.
 \subsection{\_\_isLinear}
+The loop is linear if it describes an equation consisting of a constant or a sum of a constant and a constant times a variable:
+\[y = a + bx^1\]
+To make sure the algebraic loop is linear, we have to check if there are blocks that invalidate this definition. If there are none, the loop is linear.
+\\The first block that can invalidate the definition is the productBlock. If this block has two variables as inputs, it will create a term with two different variables or a variable squared, which both will invalidate the definition. There can therefore only be at most one input of a productblock in the loop.
+\\The second block that can invalidate the definition is the rootBlock. Because the rootblock can be interpreted as \(x^{1/n}\) with n meaning the n-th root, the rootblock will invalidate the definition if x is a variable, or if x can be found in the loop.
+\\The third block that can invalidate the definition is the inverterBlock. This block can be interpreted as \(x^{-1}\), which will once again invalidate the definition if x is a variable, or if x can be found in the loop.
 
-By definition, constant blocks are not in strong components. Thus, if both input 1 and input 2 is in strong components, then it means that they violate the linear loop constraint. Because it means that two inputs are variable such as a*b in a loop.  Therefore, for that cases the function return false and for all other cases it returns true.
 \section{CBD Simulator}
 For the entire CBD model, refer to Appendix \ref{appendix:kinetic} \\
 As a CBD simulator, we calculated kinetic energy for each velocity given in a list. 
