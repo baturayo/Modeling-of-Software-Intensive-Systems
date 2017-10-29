@@ -1,26 +1,32 @@
 \documentclass{article}
 \usepackage{amsmath}
 \begin{document}
-\(Constant.OUT1^{[s+1]} = 5;\)\\
-\(Constant2.OUT1^{[s+1]} = 2;\)\\
-\(Negator.IN1^{[s+1]} = Constant.OUT1^{[s+1]};\)\\
-\(Negator.OUT1^{[s+1]} = -Negator.IN1^{[s+1]};\)\\
-\(Inverter.IN1^{[s+1]} = Negator.OUT1^{[s+1]};\)\\
-\(Inverter.OUT1^{[s+1]} = \dfrac{1}{Inverter.IN1^{[s+1]}};\)\\
-\(Adder.IN1^{[s+1]} = Inverter.OUT1^{[s+1]};\)\\
-\(Adder.IN2^{[s+1]} = Constant.OUT1^{[s+1]};\)\\
-\(Adder.OUT1^{[s+1]} = Adder.IN1^{[s+1]} + Adder.IN2^{[s+1]};\)\\
-\(Product.IN1^{[s+1]} = Adder.OUT1^{[s+1]};\)\\
-\(Product.IN2^{[s+1]} = Constant.OUT1^{[s+1]};\)\\
-\(Product.OUT1^{[s+1]} = Product.IN1^{[s+1]} * Product.IN2^{[s+1]};\)\\
-\(Generic.IN1^{[s+1]} = Product.OUT1^{[s+1]};\)\\
-\(Generic.OUT1^{[s+1]} = sin(Generic.IN1)^{[s+1]}\)\\
-\(Root.IN1^{[s+1]} = Generic.OUT1^{[s+1]};\)\\
-\(Root.IN2^{[s+1]} = Constant2.OUT1^{[s+1]};\)\\
-\(Root.OUT1^{[s+1]} = \sqrt[Root.IN2]{Root.IN1}^{[s+1]};\)\\
-\(Modulo.IN1^{[s+1]} = Root.OUT1^{[s+1]};\)\\
-\(Modulo.IN2^{[s+1]} = Constant.OUT1^{[s+1]};\)\\
-\(Modulo.OUT1^{[s+1]} = Modulo.IN1^{[s+1]} \% Modulo.OUT1^{[s+1]};\)\\
-\(Delay.OUT1^{[s+1]} = Delay.IN1^{[s]};\)\\
-\(Delay.OUT1^{[0]} = Delay.IN2^{[s+1]};\)\\
+\(OutEnergy.IN1^{[s+1]} = multiplication.OutMult.OUT1^{[s+1]};\)\\
+\(counter.delay.IC^{[s+1]} = counter.zero.OUT1^{[s+1]};\)\\
+\(counter.delay.IN1^{[s+1]} = counter.sum.OUT1^{[s+1]};\)\\
+\(counter.delay.OUT1^{[s+1]} = counter.delay.IN1^{[s]};\)\\
+\(counter.delay.OUT1^{[0]} = counter.delay.IN2^{[0]};\)\\
+\(counter.sum.IN1^{[s+1]} = counter.delay.OUT1^{[s+1]};\)\\
+\(counter.sum.IN2^{[s+1]} = counter.one.OUT1^{[s+1]};\)\\
+\(counter.sum.OUT1^{[s+1]} = counter.sum.IN1^{[s+1]} + counter.sum.IN2^{[s+1]};\)\\
+\(counter.zero.OUT1^{[s+1]} = 0.0;\)\\
+\(counter.one.OUT1^{[s+1]} = 1.0;\)\\
+\(counter.OutCount.IN1^{[s+1]} = counter.delay.OUT1^{[s+1]};\)\\
+\(counter.OutCount.OUT1^{[s+1]} = counter.OutCount.IN1^{[s+1]};\)\\
+\(multiplication.mult1.IN1^{[s+1]} = multiplication.InNumber.OUT1^{[s+1]};\)\\
+\(multiplication.mult1.IN2^{[s+1]} = multiplication.mass.OUT1^{[s+1]};\)\\
+\(multiplication.mult1.OUT1^{[s+1]} = multiplication.mult1.IN1^{[s+1]} * multiplication.mult1.IN2^{[s+1]};\)\\
+\(multiplication.mult2.IN1^{[s+1]} = multiplication.mult1.OUT1^{[s+1]};\)\\
+\(multiplication.mult2.IN2^{[s+1]} = multiplication.InNumber.OUT1^{[s+1]};\)\\
+\(multiplication.mult2.OUT1^{[s+1]} = multiplication.mult2.IN1^{[s+1]} * multiplication.mult2.IN2^{[s+1]};\)\\
+\(multiplication.mass.OUT1^{[s+1]} = 1.0;\)\\
+\(multiplication.adder.IN1^{[s+1]} = multiplication.mult2.OUT1^{[s+1]};\)\\
+\(multiplication.adder.IN2^{[s+1]} = multiplication.negator.OUT1^{[s+1]};\)\\
+\(multiplication.adder.OUT1^{[s+1]} = multiplication.adder.IN1^{[s+1]} + multiplication.adder.IN2^{[s+1]};\)\\
+\(multiplication.negator.IN1^{[s+1]} = multiplication.adder.OUT1^{[s+1]};\)\\
+\(multiplication.negator.OUT1^{[s+1]} = -multiplication.negator.IN1^{[s+1]};\)\\
+\(multiplication.InNumber.IN1^{[s+1]} = counter.OutCount.OUT1^{[s+1]};\)\\
+\(multiplication.InNumber.OUT1^{[s+1]} = multiplication.InNumber.IN1^{[s+1]};\)\\
+\(multiplication.OutMult.IN1^{[s+1]} = multiplication.adder.OUT1^{[s+1]};\)\\
+\(multiplication.OutMult.OUT1^{[s+1]} = multiplication.OutMult.IN1^{[s+1]};\)\\
 \end{document}

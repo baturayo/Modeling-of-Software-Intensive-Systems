@@ -1,5 +1,6 @@
 from CBDMultipleOutput.Source.CBD import *
 from CBDMultipleOutput.Source.CBDDraw import draw
+from KineticEnergyCBD import KineticEnergyCalculator
 
 class DenotSem:
 
@@ -62,6 +63,10 @@ class DenotSem:
                 inname1 = self.__UniqueName(block, "IN1")
                 inname2 = self.__UniqueName(block, "IN2")
                 self.addDelay(inname1, inname2, outname)
+            if block.getBlockType() == "WireBlock":
+                outname = self.__UniqueName(block, "OUT1")
+                inname1 = self.__UniqueName(block, "IN1")
+                self.addWire(inname1, outname)
 
     def addConnection(self, fromOutput, toInput):
         #Add a connection (var1 = var2)
@@ -95,6 +100,9 @@ class DenotSem:
         self.equations.append(Output + "^{[s+1]} = " + Input + "^{[s]};")
         self.equations.append(Output + "^{[0]} = " + IC + "^{[0]};")
 
+    def addWire(self, Input, Output):
+        self.equations.append(Output + "^{[s+1]} = " + Input + "^{[s+1]};")
+
     def writeToLatex(self, outputName):
         #Write the stored equations to a latex file
         file = open(outputName, 'w')
@@ -112,11 +120,8 @@ def createLatex(CBD, output):
     semantics.writeToLatex(output)
 
 
-cbd = LatexExample("CBD")
-draw(cbd, "number_gen.dot")
+cbd = KineticEnergyCalculator("CBD")
 
-semantics = DenotSem()
-semantics.evalCBD(cbd)
-semantics.writeToLatex("Output.tex")
+createLatex(cbd, "Output.tex")
 
 

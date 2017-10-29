@@ -405,6 +405,10 @@ class CBD(BaseBlock):
         blocksToAdd = []
 
         for childBlock in self.__blocks:
+            if parent == None:
+                #Upperlevel cbd's can have input and output ports. Error happens when these are not caught
+                continue
+
             if isinstance(childBlock, InputPortBlock):
                 # Replace InputPortBlock with WireBlock
                 wb = WireBlock(childBlock.getBlockName())
