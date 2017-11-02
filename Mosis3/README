@@ -1,0 +1,5 @@
+The answers for the first part of the assignment can be found in the code at their corresponding locations.
+
+To run our example of a CBD, use python to run the KineticEnergyCBD.py file. It will plot the result, and it will draw the CBD to the number_gen.dot file.
+
+To use our latex translator for part 3, use the createLatex method defined in the DenotationalSem.py file. It takes your CBD as the first argument and the name for your outputfile as the second. In our project we added an example call to this function using the CBD designed in part 2.
