@@ -795,6 +795,30 @@ class DerivatorBlock(CBD):
     def __init__(self, block_name):
         CBD.__init__(self, block_name, ["IN1", "delta_t", "IC"], ["OUT1"])
         #TO IMPLEMENT
+        self.addBlock(DelayBlock(block_name="delay"))
+        self.addBlock(AdderBlock(block_name="sum1"))
+        self.addBlock(AdderBlock(block_name="sum2"))
+        self.addBlock(ProductBlock(block_name="product1"))
+        self.addBlock(ProductBlock(block_name="product2"))
+        self.addBlock(NegatorBlock(block_name="negator1"))
+        self.addBlock(NegatorBlock(block_name="negator2"))
+        self.addBlock(InverterBlock(block_name="inverter"))
+
+        self.addConnection("delta_t", "product1")
+        self.addConnection("IC", "product1")
+        self.addConnection("product1", "negator1")
+        self.addConnection("negator1", "sum1")
+        self.addConnection("IN1", "sum1")
+        self.addConnection("sum1", "delay", input_port_name="IC")
+        self.addConnection("IN1", "delay", input_port_name="IN1")
+        self.addConnection("delay", "negator2")
+        self.addConnection("negator2", "sum2")
+        self.addConnection("IN1", "sum2")
+        self.addConnection("sum2", "product2")
+        self.addConnection("delta_t", "inverter")
+        self.addConnection("inverter", "product2")
+        self.addConnection("product2", "OUT1")
+
 
 class IntegratorBlock(CBD):
     """
@@ -803,6 +827,18 @@ class IntegratorBlock(CBD):
     def __init__(self, block_name):
         CBD.__init__(self, block_name, ["IN1", "delta_t", "IC"], ["OUT1"])
         # TO IMPLEMENT
+        self.addBlock(AdderBlock(block_name="sum"))
+        self.addBlock(ProductBlock(block_name="product"))
+        self.addBlock(DelayBlock(block_name="delay"))
+
+        self.addConnection("delta_t", "product")
+        self.addConnection("IN1", "product")
+        self.addConnection("product", "sum")
+        self.addConnection("sum", "delay")
+        self.addConnection("IC", "delay", input_port_name="IC")
+        self.addConnection("sum", "delay", input_port_name="IN1")
+        self.addConnection("delay", "sum")
+        self.addConnection("delay", "OUT1")
 
 
 """ This module implements a dependency graph
