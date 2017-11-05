@@ -305,6 +305,30 @@ class WireBlock(BaseBlock):
     def	compute(self, curIteration):
         self.appendToSignal(self.getInputSignal(curIteration, "IN1").value)
 
+class ComputerBlock(BaseBlock):
+    """
+    Outputs the desired speeds at a certain time
+    """
+
+    def __init__(self, block_name):
+        BaseBlock.__init__(self, block_name, ["IN1"], ["OUT1"])
+
+    def compute(self, curIteration):
+        value = 0
+        time = self.getInputSignal(curIteration, "IN1")
+
+        if time < 10:
+            value = 0
+        elif time < 160:
+            value = 10
+        elif time < 200:
+            value = 4
+        elif time < 260:
+            value = 14
+        else:
+            value = 6
+        self.appendToSignal(value)
+
 class TimeBlock(BaseBlock):
     """
     Outputs the current time of the simulation
