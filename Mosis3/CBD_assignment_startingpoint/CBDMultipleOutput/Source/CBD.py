@@ -221,6 +221,23 @@ class GenericBlock(BaseBlock):
             repr += "  Operator :: " + self.__block_operator + "\n"
         return repr
 
+class AbsoluteBlock(BaseBlock):
+    """
+    The Absolute block will evaluate the operator on the input
+    operator is the name (a string) of a Python function from the math library
+    which will be called when the block is evaluated
+    by default, initialized to None
+    """
+
+    def __init__(self, block_name):
+        # operator is the name (a string) of a Python function from the math library
+        BaseBlock.__init__(self, block_name, ["IN1"], ["OUT1"])
+
+    def compute(self, curIteration):
+        firstin = self.getInputSignal(curIteration, "IN1").value
+        self.appendToSignal(eval("abs(firstin)"), "OUT1")
+
+
 class RootBlock(BaseBlock):
     """
     A basic block that computes the IN2-th root from IN1
