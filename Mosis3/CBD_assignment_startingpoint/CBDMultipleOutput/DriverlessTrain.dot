@@ -1,0 +1,27 @@
+
+digraph graphname {
+ Velocity [label="OutputPortBlock (Velocity)"];
+TrainPerson -> Velocity [label=" / VTrain"];
+cost [label="OutputPortBlock (cost)"];
+Cost -> cost [label=" / OutCost"];
+Timeblock [label="Time (Timeblock)"];
+ComputerBlock [label="ComputerBlock (ComputerBlock)"];
+Timeblock -> ComputerBlock [label=""];
+SumBlock [label="AdderBlock (SumBlock)"];
+ComputerBlock -> SumBlock [label=""];
+NegatorBlock -> SumBlock [label=""];
+NegatorBlock [label="NegatorBlock (NegatorBlock)"];
+TrainPerson -> NegatorBlock [label=" / VTrain"];
+PIDController [label="PidController (PIDController)"];
+Timeblock -> PIDController [label="DeltaT"];
+SumBlock -> PIDController [label="DeltaV"];
+TrainPerson [label="TrainandPerson (TrainPerson)"];
+PIDController -> TrainPerson [label="Traction / Traction"];
+Timeblock -> TrainPerson [label="DeltaT"];
+Cost [label="CostFunctionBlock (Cost)"];
+TrainPerson -> Cost [label="InVTrain / VTrain"];
+Timeblock -> Cost [label="InDelta"];
+ComputerBlock -> Cost [label="InVi"];
+TrainPerson -> Cost [label="InXPerson / XPerson"];
+
+}

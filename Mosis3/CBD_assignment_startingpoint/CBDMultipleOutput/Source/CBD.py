@@ -180,6 +180,7 @@ class AdderBlock(BaseBlock):
         secondin = self.getInputSignal(curIteration, "IN2")
         self.appendToSignal(firstin.value+secondin.value, "OUT1")
 
+
 class ProductBlock(BaseBlock):
     """
     The product block will multiply the two inputs
@@ -332,8 +333,7 @@ class ComputerBlock(BaseBlock):
 
     def compute(self, curIteration):
         value = 0
-        time = self.getInputSignal(curIteration, "IN1")
-
+        time = self.getInputSignal(curIteration, "IN1").value
         if time < 10:
             value = 0
         elif time < 160:
@@ -880,6 +880,7 @@ class IntegratorBlock(CBD):
         self.addConnection("sum", "delay", input_port_name="IN1")
         self.addConnection("delay", "sum")
         self.addConnection("delay", "OUT1")
+
 
 
 """ This module implements a dependency graph
