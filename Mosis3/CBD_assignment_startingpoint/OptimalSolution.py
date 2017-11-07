@@ -1,5 +1,5 @@
 from CBDMultipleOutput.Source.CBD import *
-from CBD_assignment_startingpoint.DiverlessTrain import DriverlessTrain
+from CBD_assignment_startingpoint.DriverlessTrain import DriverlessTrain
 
 
 

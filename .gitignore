@@ -3,3 +3,6 @@
 *.synctex.gz
 *.pyc
 *.xml
+*.dot
+*.html
+*.png
