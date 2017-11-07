@@ -291,6 +291,7 @@ class DelayBlock(BaseBlock):
             self.__values.append(self.getInputSignal(curIteration-1, "IN1").value)
             self.appendToSignal(self.__values[-1])
 
+
 class InputPortBlock(BaseBlock):
     """
     The input port of a CBD

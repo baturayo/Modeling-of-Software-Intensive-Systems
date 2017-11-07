@@ -19,11 +19,11 @@ class Time(CBD):
 
 
 class PidController(CBD):
-    def __init__(self, block_name):
+    def __init__(self, block_name, Kp, Ki, Kd):
         CBD.__init__(self, block_name, input_ports=["DeltaV", "DeltaT"], output_ports=["Traction"])
-        self.addBlock(ConstantBlock("Kp", value=200))
-        self.addBlock(ConstantBlock("Ki", value=0))
-        self.addBlock(ConstantBlock("Kd", value=0))
+        self.addBlock(ConstantBlock("Kp", value=Kp))
+        self.addBlock(ConstantBlock("Ki", value=Ki))
+        self.addBlock(ConstantBlock("Kd", value=Kd))
         self.addBlock(ConstantBlock("ZeroBlock", value=0))
         self.addBlock(AdderBlock("FirstSum"))
         self.addBlock(AdderBlock("SecondSum"))
@@ -59,6 +59,7 @@ class PidController(CBD):
 class TrainandPerson(CBD):
     def __init__(self, block_name):
         CBD.__init__(self, block_name, input_ports=["Traction", "DeltaT"], output_ports=["VTrain", "XPerson"])
+        #Trainpart
         self.addBlock(ConstantBlock("HalfPCdA", value=3.2832))
         self.addBlock(ConstantBlock("MassSum", value=6073.0))
         self.addBlock(ConstantBlock("IC", value=0))
@@ -85,18 +86,63 @@ class TrainandPerson(CBD):
         self.addConnection("DeltaT", "Integral", input_port_name="delta_t")
         self.addConnection("Integral", "VTrain")
 
-        self.addConnection("IC", "XPerson")
+        #Personpart
+        self.addBlock(ConstantBlock("MassDivPassenger", value=73.0/6073.0))
+        self.addBlock(ConstantBlock("K", value=300.0))
+        self.addBlock(ConstantBlock("C", value=150.0))
+        self.addBlock(ConstantBlock("MassPassenger", value=73.0))
+
+        self.addBlock(ProductBlock("KxXpass"))
+        self.addBlock(ProductBlock("CxVPassNeg"))
+        self.addBlock(ProductBlock("AxTraction"))
+        self.addBlock(ProductBlock("TotalDivision"))
+        self.addBlock(NegatorBlock("XPassNeg"))
+        self.addBlock(NegatorBlock("VPassNeg"))
+        self.addBlock(NegatorBlock("AxTractionNeg"))
+        self.addBlock(AdderBlock("KXplusCV"))
+        self.addBlock(AdderBlock("ResultplusAFtract"))
+        self.addBlock(InverterBlock("OneDivMPass"))
+        self.addBlock(IntegratorBlock("getVPass"))
+        self.addBlock(IntegratorBlock("getXPass"))
+
+        self.addConnection("XPassNeg", "KxXpass")
+        self.addConnection("K", "KxXpass")
+        self.addConnection("VPassNeg", "CxVPassNeg")
+        self.addConnection("C", "CxVPassNeg")
+        self.addConnection("Traction", "AxTraction")
+        self.addConnection("MassDivPassenger", "AxTraction")
+        self.addConnection("AxTraction", "AxTractionNeg")
+        self.addConnection("KxXpass", "KXplusCV")
+        self.addConnection("CxVPassNeg", "KXplusCV")
+        self.addConnection("KXplusCV", "ResultplusAFtract")
+        self.addConnection("AxTractionNeg", "ResultplusAFtract")
+        self.addConnection("MassPassenger", "OneDivMPass")
+        self.addConnection("OneDivMPass", "TotalDivision")
+        self.addConnection("ResultplusAFtract", "TotalDivision")
+        #Here we have dV or a for the passenger
+        self.addConnection("TotalDivision", "getVPass", input_port_name="IN1")
+        self.addConnection("DeltaT", "getVPass", input_port_name="delta_t")
+        self.addConnection("IC", "getVPass", input_port_name="IC")
+        self.addConnection("getVPass", "VPassNeg")
+        self.addConnection("getVPass", "getXPass", input_port_name="IN1")
+        self.addConnection("DeltaT", "getXPass", input_port_name="delta_t")
+        self.addConnection("IC", "getXPass", input_port_name="IC")
+        self.addConnection("getXPass", "XPassNeg")
+        self.addConnection("getXPass", "XPerson")
+
+
+
 
 
 
 class DriverlessTrain(CBD):
-    def __init__(self, block_name):
-        CBD.__init__(self, block_name, output_ports=["Velocity", "cost"])
+    def __init__(self, block_name, Kp=200, Ki=0, Kd=0):
+        CBD.__init__(self, block_name, output_ports=["Velocity", "XPerson", "cost"])
         self.addBlock(Time("Timeblock"))
         self.addBlock(ComputerBlock("ComputerBlock"))
         self.addBlock(AdderBlock("SumBlock"))
         self.addBlock(NegatorBlock("NegatorBlock"))
-        self.addBlock(PidController("PIDController"))
+        self.addBlock(PidController("PIDController", Kp, Ki, Kd))
         self.addBlock(TrainandPerson("TrainPerson"))
         self.addBlock(CostFunctionBlock("Cost"))
         self.addConnection("Timeblock", "ComputerBlock", output_port_name="OUT1")
@@ -108,6 +154,7 @@ class DriverlessTrain(CBD):
         self.addConnection("Timeblock", "TrainPerson", input_port_name="DeltaT", output_port_name="OUTDELTA")
         self.addConnection("TrainPerson", "NegatorBlock", output_port_name="VTrain")
         self.addConnection("TrainPerson", "Velocity", output_port_name="VTrain")
+        self.addConnection("TrainPerson", "XPerson", output_port_name="XPerson")
 
         #Connect blocks to costfunction
         self.addConnection("ComputerBlock", "Cost", input_port_name="InVi")
@@ -121,35 +168,4 @@ class DriverlessTrain(CBD):
 
 cbd = DriverlessTrain("Train")
 cbd.run(3500)
-
-#Plot velocity and target velocity on 'untrained' cbd
-times = []
-times2 = []
-output = []
-output2 = []
-
-for timeValuePair in cbd.getSignal("Velocity"):
-    times.append(timeValuePair.time)
-    times2.append(timeValuePair.time)
-    if timeValuePair.time < 100:
-        output2.append(0)
-    elif timeValuePair.time < 1600:
-        output2.append(10)
-    elif timeValuePair.time < 2000:
-        output2.append(4)
-    elif timeValuePair.time < 2600:
-        output2.append(14)
-    else:
-        output2.append(6)
-    output.append(timeValuePair.value)
-
-
-# Plot
-output_file("./DriverlessTrain.html", title="Driverless Train")
-p = figure(title="Even Numbers", x_axis_label='time', y_axis_label='m/s')
-p.multi_line([times, times2], [output, output2], legend="Speed at time t", line_color=['red', 'green'])
-show(p)
-
-#Dot
-draw(cbd, "DriverlessTrain.dot")
-draw(cbd.getBlockByName("TrainPerson"), "TrainandPerson.dot")
+print(cbd.getSignal("cost")[-1])
