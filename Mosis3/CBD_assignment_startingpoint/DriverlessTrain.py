@@ -165,7 +165,3 @@ class DriverlessTrain(CBD):
         self.addConnection("Cost", "cost", output_port_name="OutCost")
 
 
-
-cbd = DriverlessTrain("Train")
-cbd.run(3500)
-print(cbd.getSignal("cost")[-1])
