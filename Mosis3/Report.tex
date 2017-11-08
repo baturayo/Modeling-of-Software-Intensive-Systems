@@ -1,14 +1,284 @@
 \documentclass{article}
-\title{\vspace{60mm}\textbf{Continous Causal Block Diagrams}}
+\title{\vspace{60mm}\textbf{Continuous Time Causal Block Diagrams (CBDs)}}
 \author{Ken Bauwens 20143225\\and Baturay Ofluoglu 20174797\\}
 
 \usepackage{amsmath}
 \usepackage{outline}
+\usepackage[export]{adjustbox}
 \usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{natbib}
 \usepackage{pmgraph}
 \usepackage[normalem]{ulem}
 \usepackage[toc,page]{appendix}
 \begin{document}
 \maketitle
 \pagebreak
+\section{Tasks}
+\subsection{Integral Blocks}
+
+Integrator block for CBD is implemented by using Forward Euler Series. Forward Euler Series provide approximate solution for integrals.  Refer to equation (1) for the formula of Forward Euler Series. Basically, it converts continuous time to discrete by using small time steps, called ${\Delta}t$. It calculates the area of rectangle at each step ${F (x[s] , s\Delta t)\Delta t}$ and add them cumulatively. Therefore, lower ${\Delta}t$ requires more steps but lower error.
+
+\begin{equation}
+X^{n+1} = X^n + F (x[s] , s\Delta t)\Delta t
+\end{equation}
+
+For the CBD implementation of integral block refer to Appendix \ref{appendix:euler}. The block requires three inputs which are initial condition, input function and ${\Delta}t$. Delay and sum block are used to add the area of rectangles cumulatively and multiplication block is used to calculate  ${F (x[s] , s\Delta t)\Delta t}$. 
+
+\subsection{Derivative Blocks}
+
+Derivative block for CBD is implemented by using Newton’s Difference Quotient. This method is also an approximation to find the derivative of the function. It finds the slope of a function at a given ${\Delta}t$. As in the integral blocks, if ${\Delta}t$ is smaller, then derivative prediction will be more accurate. Refer to equation (2) for the formula of Newton’s Difference Quotient.
+
+\begin{equation}
+{\dfrac{x^{[s+1]} - x^{[s]}}{\Delta t }}= F(x[s+1])
+\end{equation}
+
+For the CBD implementation of integral block refer to Appendix \ref{appendix:derivative}.
+
+To implement equation (2) in CBD form, we converted it as equation (3) and 
+(4).\citep{a}
+
+\begin{equation}
+{\dfrac{x^{[s]} - x^{[s-1]}}{\Delta t }}= y^{[s]}
+\end{equation}
+\begin{equation}
+x^{[s-1]}= x^{[s]} - y^{[s]}{\Delta t }
+\end{equation}
+
+\begin{equation}
+x^{[-1]}= x^{[0]} - y^{[0]}{\Delta t }
+\end{equation}
+Since, we know that at the initial state we cannot take the derivative, we calculate the initial state $x^{[-1]}$ by using delay block. At the delay block as an IC input, we calculate equation (5). Then, after each state delay block keeps the previous states value to calculate differences between ${x^{[s]} - x^{[s-1]}}$.
+
+\subsection{Test Approximations}
+\subsubsection{Harmonic Oscillator CBD with Integral Blocks}
+For the CBD implementation of Harmonic Oscillator with integral block refer to Appendix \ref{appendix:hointegral}.
+
+
+For the plot of Harmonic Oscillator with integral block refer to Appendix \ref{appendix:hointegralplot}. Note that in this plot ${\Delta t } = 0.01$ and it iterates 2000 times.
+
+Integrator1 takes input from negator block which is equal to $\frac{d^2 x}{dt^2}$. Then the output of Integrator1 block will be $\frac{dx}{dt}$ and this output will be used by Integral2 as an input to generate $x$.  
+\subsubsection{Harmonic Oscillator CBD with Derivative Blocks}
+For the CBD implementation of Harmonic Oscillator with integral block refer to Appendix \ref{appendix:hoderivative}.
+
+
+For the plot of Harmonic Oscillator with derivative block refer to Appendix \ref{appendix:hoderivativeplot}. Note that in this plot ${\Delta t } = 0.01$ and it iterates 2000 times.
+
+
+Derivator1 takes input from negator block which is equal to $-x$. Then the output of Derivative1 block will be $-\frac{dx}{dt}$ and this output will be used by Derivative2 as an input to generate $-\frac{d^2 x}{dt^2}$. The output is returned after negator because we are looking for a positive $\frac{d^2 x}{dt^2}$  
+
+\subsection{Measure Error}
+The error between the approximated differential equation and real differential equation is calculated as equation (6).
+
+\begin{equation}
+e(t) =   \int_0|sin(t){-x(t)}|dt
+\end{equation}
+
+For the CBD implementation of Error Block  refer to Appendix \ref{appendix:hoerror}.
+
+In this Error block, $\Delta t$ is a constant block that is directly used by Derivative or Integral block. However, for SinusBlock it needs to be multiplied with TimeBlock to obtain the same time with the Derivative or Integral blocks. Because if SinusBlock only uses TimeBlock as an input, then the input time would be the current iteration. By default current iteration increases by 1 and suppose $\Delta t = 0.1$. In this case, the time for SinusBlock would be 1 while the time for Derivative or Integral Block is 0.1. To avoid inconsistencies, we multiplied Time Block and $\Delta t$, to obtain the same time. Note that, you should use default current iteration as 1. It should not be changed to use this Error Block. However, $\Delta t$ may change base on preference.
+\newpage
+\subsubsection{Harmonic Oscillator Error Comparison between Derivative and Integral Block implementations}
+
+Harmonic Oscillator approximation by using derivative blocks is plotted at  \ref{appendix:hoderivativeplot}. As it can be seen, when time increases the amplitude decreases and $\lim_{t\to\infty} x(t)$ goes to 0. 
+
+
+In addition, Harmonic Oscillator approximation by using integral blocks is plotted at  \ref{appendix:hointegralplot}. For this case when time goes to infinity the amplitude also goes to infinity and for the $\lim_{t\to\infty} x(t) = \infty$ . 
+
+The value for sin(t) is always between 1 and -1. Thus, without plotting the error results, it is strait forward that in the long run derivative block will generate less error for the same $\Delta t$ values based on equation (6).   
+
+The two different error plot for Harmonic Oscillator approximation by using Integral Blocks is given at \ref{appendix:hointegralerror1} for 10000 iterations and 0.001 ${\Delta t}$ and at \ref{appendix:hointegralerror2} for 100 iterations and 0.1 ${\Delta t}$. 
+
+For Harmonic Oscillator approximation by using Derivative Blocks is given at \ref{appendix:hoderivativeerror1} for 10000 iterations and 0.001 ${\Delta t}$ and at \ref{appendix:hoderivativeerror2} for 100 iterations and 0.1 ${\Delta t}$. 
+
+The iteration sizes are different but all plots have the same time intervals. The ending simulation time will be calculated as ${\Delta t}(\#Iterations) = Simulation Ending Time$ for both cases. Thus, we evaluate the simulation between time 0 and 10.
+
+For small ${\Delta t}$ value as 0.001, the error difference between the integral and derivative implementations is almost negligible. However, when ${\Delta t}$ increases to 0.1, then derivative implementation performs much better than integral. For t=10, derivative has almost 1.2 error score. However, integral has 1.7 error point. Thus, for this case using derivative blocks performs 42\% better than using integral blocks.
+
+Increasing  ${\Delta t}$ also increases the error. For instance, when ${\Delta t} = 0.1$ using integral blocks at time=10 has 1.7 error. However, for smaller ${\Delta t}$ as 0.001 the error is around 0.015.
+
+Note that there is a tradeoff between ${\Delta t}$ and execution time. When ${\Delta t}$ decreases, accuracy of the model increases but execution time increases as well. For very small ${\Delta t}$ values, computing may be impossible in a feasible time. 
+\pagebreak
+\section{Driverless Train}
+\subsection{Computerblock}
+Our implementation of the computerblock is simple. The table of values is hardcoded into the block. It takes the current time as input and outputs the correct target velocity depending on the current time. 
+\subsection{Driverless Train CBD}
+The CBDmodels for the driverless train can be found in the appendix (\ref{appendix:DiagramDriverless}, \ref{appendix:DiagramPID}, \ref{appendix:DiagramPlant}).
+\\To simplify the implemented ODE's we precalculated some of the constants. If we have the system of ODE's:
+\[
+\begin{cases}
+	\frac{dv_{passger}}{dt} = \frac{k(-x_{passger})+c(-v_{passger})-m_{passger}*\frac{F_{traction}}{(m_{train}+m_{passger})}}{m_{passger}}\\
+    \frac{dv_{passger}}{dt} = \frac{F_{traction}-\frac{1}{2}.p.v^2_{train}.C_D.A}{(m_{train}+m_{passger})}\\
+    \frac{dx_{passger}}{dt} = v_{passger}\\
+    \frac{dx_{passger}}{dt} = v_{train}\\
+\end{cases}
+\]
+We can precalculate \(\frac{1}{2}.p.v^2_{train}.C_D.A\), \(m_{train}+m_{passger}\) and \(m_{passger}*\frac{F_{traction}}{(m_{train}+m_{passger})}\) using the constants given in the assignment to simplify the resulting CBD's.
+\subsubsection{Delta\_t}
+We tried using a delta\_t of 1 at first, executing a step every second. This resulted in large errors caused by the integralblocks in the PlantCBD. A better value for delta\_t is 0,1. This value causes the cbd to run for a couple of seconds, but the resulting errors are within acceptable ranges.
+\subsubsection{Results}
+The plots for the train velocity and person displacement using (200,0,0) for (Kp, Ki, Kd) can be found in the appendix (\ref{appendix:Velocity200}, \ref{appendix:Displacement200}).
+\pagebreak
+\subsection{Tuning the PIDController}
+We took inspiration from the \textit{hillclimbing} algorithm and the \textit{Simulated annealing} algorithm and created a simple algorithm to try and find a better combination for (Kp, Ki, Kd). The algorithm can be described as follows:
+\begin{enumerate}
+\item Choose a random configuration with values between 0 and 400
+\item Pick 3 random values in the interval [-5,5]
+\item Add each of the items to the correct value \(\rightarrow(K_p+r_1, K_i+r_2, K_d+r_3)\)
+\item Run the cbd with the new values for \((K_p, K_i, K_d)\)
+\item Evaluate the score
+\item If score \textless\ bestscore, save the configuration and the score somewhere
+\item Increment a counter with 1
+\item If counter\%10 == 0, go to 1 else go to 2
+\end{enumerate}
+This loop can be ran as long as the user wants. Longer runs will be more likely to find a better solution. We ran this for 500 loops.
+\\Step 8 exists to prevent getting stuck in local maxima. 
+\\The best solution by using this algorithm was these parameters (429,252,224) with a score of 1055. For reference, the solution (200,0,0) has a score of 157010,5.
+Keep in mind that this is not necessarily the absolute best configurations, but it gives a low score while still staying within the requirements.
+\\The plot for the velocity of the train can be found in appendix \ref{appendix:VelocityOpt}. We see that the velocity oscillates alot, but still converges to the desired speed.
+\\The plot for the displacement of the passengers can be found in appendix \ref{appendix:DisplacementOnlyOpt}. We see that the displacement is never greater than 0,4. In appendix \ref{appendix:DisplacementOpt} we plotted the displacement together with the acceleration of the train.
+\newpage
+\begin{appendices}
+\section{Integral Block CBD}
+\label{appendix:euler}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width = 15cm]{Integral_Block.png}  
+\end{figure}
+\newpage
+\section{Derivative Block CBD}
+\label{appendix:derivative}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=1.35\textwidth,left]{DerivativeBlock.png}  
+\end{figure}
+\newpage
+\section{Harmonic Oscillator Integral Block CBD}
+\label{appendix:hointegral}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width = 15cm]{HarmonicOscillatorIntegral.png}  
+\end{figure}
+
+\section{Harmonic Oscillator Derivative Block CBD}
+\label{appendix:hoderivative}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width = 15cm]{HarmonicOscillatorDerivative.png}  
+\end{figure}
+
+\newpage
+\section{Harmonic Oscillator Derivative Block Plot}
+\label{appendix:hoderivativeplot}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width = 7cm]{DerivativeTest.png}  
+\end{figure}
+
+\section{Harmonic Oscillator Integral Block Plot}
+\label{appendix:hointegralplot}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width = 7cm]{IntegralTest.png}  
+\end{figure}
+\newpage
+
+\section{Harmonic Oscillator Integral/Derivative \newline Error Calculator CBD}
+\label{appendix:hoerror}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width = 16cm]{ErrorCBD.png}  
+\end{figure}
+\newpage
+%-----
+\section{Harmonic Oscillator Integral Block Error Plot (Iteration=10000 ${\Delta t } = 0.001$)}
+\label{appendix:hointegralerror1}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width = 7cm]{IntegralHoError_delta_0_001_iter_10000.png}  
+\end{figure}
+
+\section{Harmonic Oscillator Integral Block Error Plot(Iteration=100 ${\Delta t } = 0.1$)}
+\label{appendix:hointegralerror2}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width = 7cm]{IntegralHoError_delta_0_1_iter_100.png}  
+\end{figure}
+
+\newpage
+\section{Harmonic Oscillator Derivative Block Error Plot (Iteration=10000 ${\Delta t } = 0.001$) }
+\label{appendix:hoderivativeerror1}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width = 6.9cm]{DerivativeHoError_delta_0_001_iter_10000.png}  
+\end{figure}
+
+\section{Harmonic Oscillator Derivative Block Error Plot (Iteration=100 ${\Delta t } = 0.1$)}
+\label{appendix:hoderivativeerror2}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width = 6.9cm]{DerivativeHoError_delta_0_1_iter_100.png}  
+\end{figure}
+
+\section{CBD Diagram DriverlessTrain}
+\label{appendix:DiagramDriverless}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.3, rotate=-90]{DriverlessTrain.png}  
+\end{figure}
+
+\section{CBD Diagram PIDController}
+\label{appendix:DiagramPID}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.38,rotate=-90]{PIDController.png}  
+\end{figure}
+
+\section{CBD Diagram Plant}
+\label{appendix:DiagramPlant}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.27,rotate=-90]{Plant.png}  
+\end{figure}
+
+\section{Velocity (200,0,0)}
+\label{appendix:Velocity200}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.35]{velocity200.png}  
+\end{figure}
+\section{Displacement (200,0,0)}
+\label{appendix:Displacement200}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.35]{Displacement200.png}  
+\end{figure}
+\pagebreak
+\section{Velocity with Tuned Parameters}
+\label{appendix:VelocityOpt}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.35]{velocityoptimal.png}  
+\end{figure}
+\section{Displacement with Tuned Parameters}
+\label{appendix:DisplacementOpt}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.35]{Displacementoptimal.png}  
+\end{figure}
+\pagebreak
+\section{Only displacement with Tuned Parameters}
+\label{appendix:DisplacementOnlyOpt}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.35]{DisplacementOnlyOptimal.png}  
+\end{figure}
+
+%-----
+\end{appendices}
+\newpage
+\bibliographystyle{chicago}
+\bibliography{references}
+
+
 \end{document}

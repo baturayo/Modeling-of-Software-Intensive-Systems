@@ -1,5 +1,7 @@
-The answers for the first part of the assignment can be found in the code at their corresponding locations.
+To run the DriverlessTrain cbd with parameters (200,0,0), run Runandplot200.py in the CBD_assignment_startingpoint folder.
 
-To run our example of a CBD, use python to run the KineticEnergyCBD.py file. It will plot the result, and it will draw the CBD to the number_gen.dot file.
+To run the DriverlessTrain cbd with the tuned parameters, run RunandplotTune.py in the CBD_assignment_startingpoint folder.
 
-To use our latex translator for part 3, use the createLatex method defined in the DenotationalSem.py file. It takes your CBD as the first argument and the name for your outputfile as the second. In our project we added an example call to this function using the CBD designed in part 2.
+Both these scripts will run the cbd for 350 seconds and will then plot the expected graphs.
+
+The file OptimalSolution contains our implementation of an optimizer. Keep in mind that running this file might take a long time.

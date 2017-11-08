@@ -137,7 +137,7 @@ class TrainandPerson(CBD):
 
 class DriverlessTrain(CBD):
     def __init__(self, block_name, Kp=200, Ki=0, Kd=0):
-        CBD.__init__(self, block_name, output_ports=["Velocity", "XPerson", "cost"])
+        CBD.__init__(self, block_name, output_ports=["Velocity", "XPerson", "cost", "acceleration"])
         self.addBlock(Time("Timeblock"))
         self.addBlock(ComputerBlock("ComputerBlock"))
         self.addBlock(AdderBlock("SumBlock"))
@@ -145,6 +145,8 @@ class DriverlessTrain(CBD):
         self.addBlock(PidController("PIDController", Kp, Ki, Kd))
         self.addBlock(TrainandPerson("TrainPerson"))
         self.addBlock(CostFunctionBlock("Cost"))
+        self.addBlock(DerivatorBlock("AccelerationTrain"))
+        self.addBlock(ConstantBlock("Zero", value=0))
         self.addConnection("Timeblock", "ComputerBlock", output_port_name="OUT1")
         self.addConnection("ComputerBlock", "SumBlock")
         self.addConnection("NegatorBlock", "SumBlock")
@@ -163,5 +165,10 @@ class DriverlessTrain(CBD):
         self.addConnection("TrainPerson", "Cost", input_port_name="InXPerson", output_port_name="XPerson")
 
         self.addConnection("Cost", "cost", output_port_name="OutCost")
+
+        self.addConnection("TrainPerson", "AccelerationTrain", input_port_name="IN1", output_port_name="VTrain")
+        self.addConnection("Zero", "AccelerationTrain", input_port_name="IC")
+        self.addConnection("Timeblock", "AccelerationTrain", input_port_name="delta_t", output_port_name="OUTDELTA")
+        self.addConnection("AccelerationTrain", "acceleration")
 
 
