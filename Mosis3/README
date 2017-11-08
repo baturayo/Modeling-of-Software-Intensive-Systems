@@ -1,3 +1,10 @@
+To run HarmonicOscillator.py and plot the error of harmonic oscillator error with derivative blocks do not change anything
+To plot harmonic oscillator error using integral blocks you need to change line 218 to cbd = HOIntegraleErrorBlock("number_gen").
+To plot harmonic oscillator plot using integral blocks change line 218 to cbd = HOIntegralTest("number_gen") and line 226 to
+for timeValuePair in cbd.getSignal("OutIntegral"):
+To plot harmonic oscillator plot using derivative blocks change line 218 to cbd = HODerivativeTest("number_gen") and line 226 to
+for timeValuePair in cbd.getSignal("OutDerivative"):
+
 To run the DriverlessTrain cbd with parameters (200,0,0), run Runandplot200.py in the CBD_assignment_startingpoint folder.
 
 To run the DriverlessTrain cbd with the tuned parameters, run RunandplotTune.py in the CBD_assignment_startingpoint folder.
