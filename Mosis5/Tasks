@@ -9,8 +9,4 @@ When driving in a train station at a speed above 20 kilometers per hour, the tra
 When a train has opened its doors, it ignores all acceleration requests until its doors have been closed again. This to prevent the train from leaving with its doors open.
 
 
-When passing a red light, the train automatically goes into emergency brake mode.
-When passing a yellow light, the speed must be lower than or equal to 50 kilometers per hour. If it is higher, an emergency brake should be triggered.
 After passing a yellow light, the speed must be limited to 50 kilometers per hour until the next light is reached. Only when a green light is reached, can the train drive at the maximum speed again.
-The driver needs to press the "dead man's button" every 30 seconds. If the button is not pressed within 5 seconds of the prompt, the train goes into emergency brake mode. Pressing the button before the prompt occurs will have no effect.
-
