@@ -1,0 +1,16 @@
+The train can go in emergency brake mode when dangerous situations occur. In this mode, the interface no longer listens to the driver, and the train will decelerate as hard as possible (i.e., -1), before turning itself off when speed has reached 0.
+After an emergency brake, when the speed has reached 0, the interface becomes responsive again after a cooldown period of 5 seconds. That is, speed must remain equal to 0 for 5 seconds before the interface can be used again.
+
+
+The train can only open its doors when it is standing still in a station. Pressing the 'open' button at any other time will just be ignored.
+The train can only open its doors once in every station: when the doors have been closed, they cannot be opened again until the next station is reached.
+Standing still does not necessarily imply that you are at a station, so the doors should remain closed if the train is outside of a station.
+When driving in a train station at a speed above 20 kilometers per hour, the train automatically goes into emergency brake mode. This holds at all points in time while in a station.
+When a train has opened its doors, it ignores all acceleration requests until its doors have been closed again. This to prevent the train from leaving with its doors open.
+
+
+When passing a red light, the train automatically goes into emergency brake mode.
+When passing a yellow light, the speed must be lower than or equal to 50 kilometers per hour. If it is higher, an emergency brake should be triggered.
+After passing a yellow light, the speed must be limited to 50 kilometers per hour until the next light is reached. Only when a green light is reached, can the train drive at the maximum speed again.
+The driver needs to press the "dead man's button" every 30 seconds. If the button is not pressed within 5 seconds of the prompt, the train goes into emergency brake mode. Pressing the button before the prompt occurs will have no effect.
+
