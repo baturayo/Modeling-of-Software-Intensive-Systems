@@ -1591,7 +1591,7 @@
 							"11": {
 								"textContent": {
 									"type": "string",
-									"value": "S_"
+									"value": "TrainSystem"
 								},
 								"style": {
 									"type": "map<string,string>",
@@ -10145,7 +10145,7 @@
 							"11": {
 								"textContent": {
 									"type": "string",
-									"value": "S_"
+									"value": "Doors"
 								},
 								"style": {
 									"type": "map<string,string>",
@@ -14913,6 +14913,176 @@
 					}
 				},
 				"$type": "/Formalisms/SCCD/SCCD.defaultIcons/transitionLink"
+			},
+			"399": {
+				"link-style": {
+					"type": "map<string,string>",
+					"value": {
+						"stroke": "#000000",
+						"stroke-dasharray": "",
+						"stroke-opacity": 1,
+						"stroke-width": 1
+					}
+				},
+				"arrowHead": {
+					"type": "ENUM(circle-black,circle-black-large,circle-white,circle-white-large,diamond-black,diamond-black-large,diamond-white,diamond-white-large,triangle-black,triangle-black-large,triangle-white,triangle-white-large,arrow-black,arrow-black-large,arrow-empty,arrow-empty-large,custom)",
+					"value": "custom"
+				},
+				"arrowTail": {
+					"type": "ENUM(circle-black,circle-black-large,circle-white,circle-white-large,diamond-black,diamond-black-large,diamond-white,diamond-white-large,triangle-black,triangle-black-large,triangle-white,triangle-white-large,arrow-black,arrow-black-large,arrow-empty,arrow-empty-large,custom)",
+					"value": "arrow-black"
+				},
+				"typename": {
+					"type": "string",
+					"value": "transitionLink"
+				},
+				"position": {
+					"type": "list<double>",
+					"value": [
+						1076.9597111878786,
+						1038.1503247939406
+					]
+				},
+				"orientation": {
+					"type": "double",
+					"value": 0
+				},
+				"scale": {
+					"type": "list<double>",
+					"value": [
+						1,
+						1
+					]
+				},
+				"mapper": {
+					"type": "code",
+					"value": "/* specify code that evaluates to an associative array of the form {...,csattr:val,...} */"
+				},
+				"parser": {
+					"type": "code",
+					"value": "/* specify code that evaluates to an associative array of the form {...,attr:val,...} */"
+				},
+				"$contents": {
+					"type": "map<string,*>",
+					"value": {
+						"nodes": {
+							"16": {
+								"textContent": {
+									"type": "string",
+									"value": "PersistentPolling"
+								},
+								"style": {
+									"type": "map<string,string>",
+									"value": {
+										"stroke": "#000000",
+										"stroke-dasharray": "",
+										"fill": "#ffffff",
+										"fill-opacity": 0.75,
+										"font-size": "13px",
+										"stroke-width": 1
+									}
+								},
+								"mapper": {
+									"type": "code",
+									"value": "({'textContent':getAttr('display')})"
+								},
+								"parser": {
+									"type": "code",
+									"value": "({'display':getAttr('textContent')})"
+								},
+								"$type": "/Formalisms/__LanguageSyntax__/ConcreteSyntax/ConcreteSyntax/Text",
+								"position": {
+									"type": "list<double>",
+									"value": [
+										"0;15.853840376990092,0%",
+										"0;-10.568483393544966,0%"
+									]
+								},
+								"orientation": {
+									"type": "double",
+									"value": "0;91.68468431789628"
+								},
+								"scale": {
+									"type": "list<double>",
+									"value": [
+										1,
+										1
+									]
+								},
+								"$linkDecoratorInfo": {
+									"type": "map<string,double>",
+									"value": {
+										"xratio": 0.44785276073619634,
+										"yoffset": -16.5
+									}
+								}
+							},
+							"281": {
+								"segments": {
+									"type": "string",
+									"value": "m0,0 l10,4 l-10,4"
+								},
+								"style": {
+									"type": "map<string,string>",
+									"value": {
+										"stroke": "#000000",
+										"fill": "#000000",
+										"fill-opacity": 0,
+										"stroke-width": 1,
+										"opacity": 1
+									}
+								},
+								"mapper": {
+									"type": "code",
+									"value": ""
+								},
+								"parser": {
+									"type": "code",
+									"value": "/* specify code that evaluates to an associative array of the form {...,attr:val,...} */"
+								},
+								"$type": "/Formalisms/__LanguageSyntax__/ConcreteSyntax/ConcreteSyntax/Path",
+								"position": {
+									"type": "list<double>",
+									"value": [
+										"0;-56.77391567486893,-89.1163574843702%",
+										"0;16.414666405875323,-45.36821385858094%"
+									]
+								},
+								"orientation": {
+									"type": "double",
+									"value": "0;-153.0198272796836"
+								},
+								"scale": {
+									"type": "list<double>",
+									"value": [
+										1,
+										1
+									]
+								},
+								"$linkDecoratorInfo": {
+									"type": "map<string,double>",
+									"value": {
+										"xratio": 1,
+										"yoffset": -4
+									}
+								}
+							}
+						},
+						"edges": []
+					}
+				},
+				"$asuri": {
+					"type": "string",
+					"value": "/Formalisms/SCCD/SCCD/transition/398.instance"
+				},
+				"$segments": {
+					"type": "map<string,list<string>>",
+					"value": {
+						"/Formalisms/SCCD/SCCD.defaultIcons/BasicStateIcon/377.instance--/Formalisms/SCCD/SCCD.defaultIcons/transitionLink/399.instance": "M1020,1043L1077,1004L1076,1038",
+						"/Formalisms/SCCD/SCCD.defaultIcons/transitionLink/399.instance--/Formalisms/SCCD/SCCD.defaultIcons/BasicStateIcon/377.instance": "M1076,1038L1077,1079L1022.0005240673529,1051.0003369004412"
+					}
+				},
+				"$type": "/Formalisms/SCCD/SCCD.defaultIcons/transitionLink"
 			}
 		},
 		"edges": [],
@@ -15167,7 +15337,7 @@
 			"128": {
 				"name": {
 					"type": "string",
-					"value": "S_"
+					"value": "TrainSystem"
 				},
 				"entryAction": {
 					"type": "code",
@@ -15251,7 +15421,7 @@
 				},
 				"action": {
 					"type": "code",
-					"value": "self.acceleration = 0\nself.velocity = 120"
+					"value": "self.acceleration = 0\nself.velocity = 120\nself.notify('Max speed of 120Km/H reached'  ,    'blue')"
 				},
 				"display": {
 					"type": "string",
@@ -15286,7 +15456,7 @@
 				},
 				"action": {
 					"type": "code",
-					"value": "self.acceleration = a"
+					"value": "self.acceleration = a\nself.notify('', 'grey')"
 				},
 				"display": {
 					"type": "string",
@@ -15358,7 +15528,7 @@
 				},
 				"action": {
 					"type": "code",
-					"value": "self.acceleration = 0   \nself.velocity = 0"
+					"value": "self.acceleration = 0   \nself.velocity = 0\nself.notify('Came to a stop'    ,    'blue')"
 				},
 				"display": {
 					"type": "string",
@@ -15393,7 +15563,7 @@
 				},
 				"action": {
 					"type": "code",
-					"value": "self.acceleration = a"
+					"value": "self.acceleration = a\nself.notify('', 'grey')"
 				},
 				"display": {
 					"type": "string",
@@ -16255,7 +16425,7 @@
 				},
 				"entryAction": {
 					"type": "code",
-					"value": ""
+					"value": "self.notify('Emergency Brake'  ,    'Red')"
 				},
 				"exitAction": {
 					"type": "code",
@@ -16456,7 +16626,7 @@
 				},
 				"action": {
 					"type": "code",
-					"value": ""
+					"value": "self.notify(''  ,    'grey')"
 				},
 				"display": {
 					"type": "string",
@@ -16575,7 +16745,7 @@
 			"354": {
 				"name": {
 					"type": "string",
-					"value": "S_"
+					"value": "Doors"
 				},
 				"entryAction": {
 					"type": "code",
@@ -17169,7 +17339,7 @@
 				},
 				"action": {
 					"type": "code",
-					"value": "self.velocity = 0\nself.acceleration = 0"
+					"value": "self.velocity = 0\nself.acceleration = 0\nself.notify('Came to a stop'  ,    'blue')"
 				},
 				"display": {
 					"type": "string",
@@ -17204,7 +17374,7 @@
 				},
 				"action": {
 					"type": "code",
-					"value": "self.acceleration = a"
+					"value": "self.acceleration = a\nprint('called')\nself.notify(''  ,    'grey')"
 				},
 				"display": {
 					"type": "string",
@@ -17241,7 +17411,7 @@
 				},
 				"action": {
 					"type": "code",
-					"value": "self.acceleration = a"
+					"value": "self.acceleration = a\nself.notify(''  ,    'grey')"
 				},
 				"display": {
 					"type": "string",
@@ -17278,7 +17448,7 @@
 				},
 				"action": {
 					"type": "code",
-					"value": "self.acceleration = 0\nself.velocity = 50"
+					"value": "self.acceleration = 0\nself.velocity = 50\nself.notify('Max speed of 50Km/H reached'  ,    'blue')"
 				},
 				"display": {
 					"type": "string",
@@ -17313,7 +17483,7 @@
 				},
 				"action": {
 					"type": "code",
-					"value": ""
+					"value": "self.notify('Speed limited to 50Km/H', 'yellow')"
 				},
 				"display": {
 					"type": "string",
@@ -17348,7 +17518,7 @@
 				},
 				"action": {
 					"type": "code",
-					"value": ""
+					"value": "self.notify('', 'grey')"
 				},
 				"display": {
 					"type": "string",
@@ -17437,6 +17607,41 @@
 					"value": [
 						"a"
 					]
+				},
+				"port": {
+					"type": "string",
+					"value": ""
+				},
+				"$type": "/Formalisms/SCCD/SCCD/transition"
+			},
+			"398": {
+				"event": {
+					"type": "string",
+					"value": ""
+				},
+				"guard": {
+					"type": "code",
+					"value": ""
+				},
+				"action": {
+					"type": "code",
+					"value": "self.notify('Are you still alive?', 'red')"
+				},
+				"display": {
+					"type": "string",
+					"value": "PersistentPolling"
+				},
+				"after": {
+					"type": "code",
+					"value": "0.02"
+				},
+				"raise": {
+					"type": "list<map<[event,scope,arguments],[string,string,list<string>]>>",
+					"value": []
+				},
+				"parameters": {
+					"type": "list<string>",
+					"value": []
 				},
 				"port": {
 					"type": "string",
@@ -18005,6 +18210,14 @@
 			{
 				"src": "397",
 				"dest": "383"
+			},
+			{
+				"src": "376",
+				"dest": "398"
+			},
+			{
+				"src": "398",
+				"dest": "376"
 			}
 		],
 		"metamodels": [
