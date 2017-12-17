@@ -5,7 +5,7 @@ import random
     
 class generator(AtomicDEVS):
 
-  def __init__(self, name="generator" , num_trains = 100, IAT = (0, 50), a_max = (2, 20)):
+  def __init__(self, name="generator" , num_trains = 25, IAT = (0, 50), a_max = (2, 20)):
     AtomicDEVS.__init__(self, name)
     
     #Generate num_trains trains and add to queue

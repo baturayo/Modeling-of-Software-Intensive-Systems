@@ -62,3 +62,4 @@ def brake_formula(v_0, t_poll, x_remaining):
     x_travelled = max(x_travelled, 0)
 
     return (new_v, x_travelled)
+

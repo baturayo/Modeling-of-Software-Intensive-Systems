@@ -15,18 +15,22 @@ sim = Simulator(trainnetwork)
 #    being reached.
 #    It should return True to stop simulation, or Falso to continue.
 def terminate_whenStateIsReached(clock, model):
-    return len(model.generator.queue) == 0
+    if model.collector.numTrains == 25:
+      print(model.collector.numTrains)
+      return True
+    else:
+      return False
 sim.setTerminationCondition(terminate_whenStateIsReached)
 
 #    A termination time is prefered over a termination condition,
 #    as it is much simpler to use.
 #    e.g. to simulate until simulation time 400.0 is reached
-#sim.setTerminationTime(400.0)
+#sim.setTerminationTime(150.0)
 
 # B. Set the use of a tracer to show what happened during the simulation run
 #    Both writing to stdout or file is possible:
 #    pass None for stdout, or a filename for writing to that file
-sim.setVerbose(None)
+#sim.setVerbose(None)
 
 # C. Use Classic DEVS instead of Parallel DEVS
 #    If your model uses Classic DEVS, this configuration MUST be set as
