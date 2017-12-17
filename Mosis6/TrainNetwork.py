@@ -14,4 +14,7 @@ class TrainNetwork(CoupledDEVS):
 
   def getStatistics(self):
     #Returns the statistics needed for optimalisation
-    return self.collector.goneby
+    #return (10*self.lights) + self.collector.averageTime
+    print(self.collector.timeSum)
+    print(self.collector.numTrains)
+    return self.collector.timeSum / self.collector.numTrains

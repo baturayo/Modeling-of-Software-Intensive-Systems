@@ -38,3 +38,4 @@ sim.setClassicDEVS()
 #    ======================================================================
 
 sim.simulate()
+print(trainnetwork.getStatistics())

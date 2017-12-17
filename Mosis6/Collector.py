@@ -13,6 +13,11 @@ class collector(AtomicDEVS):
     #Initial state of generator
     self.state="Wait"
 
+    #Statistics
+    #Average time in 'transit' = timeSum/numTrains
+    self.timeSum = 0.0    #Total sum of time spent by trains
+    self.numTrains = 0.0  #Number of trains arrived
+
     #Input and output ports
     self.QUERYRECV = self.addInPort(name="QUERYRECV")
     self.TRAIN = self.addInPort(name="TRAIN")
@@ -27,12 +32,16 @@ class collector(AtomicDEVS):
 
   def extTransition(self, inputs):
     #External transitions
+    self.goneby += self.elapsed
     if inputs.get(self.QUERYRECV) == "query":
       #Train wants to enter, is always allowed (Holds for all states)
       return "Ack"
     elif isinstance(inputs.get(self.TRAIN), train):
-      #A train arrived, do some statistical stuff and go to proc indicating train has been processed
-      self.goneby += 1
+      #A train arrived
+      #Statistical processing
+      self.numTrains += 1
+      self.timeSum += self.goneby - inputs.get(self.TRAIN).deptime
+      
       return "Proc"
     else:
       return self.state
