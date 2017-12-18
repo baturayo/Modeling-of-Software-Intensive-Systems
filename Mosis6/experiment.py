@@ -15,7 +15,7 @@ from TrainNetwork import *
 #iat = (iat_min, iat_max) -> tuple with range for iat 
 #vmax = maximum velocity, used in the formula's
 #!!!!!!!Don't forget to set the correct terminate condition in the next segment!!!!!!!!!
-trainnetwork = TrainNetwork('trainnetwork', 10, 2500, 100, iat = (50,150))
+trainnetwork = TrainNetwork('trainnetwork', 10, 2500, 100, iat = (10,20))
 sim = Simulator(trainnetwork)
 
 # 3. Perform all necessary configurations, the most commonly used are:
@@ -28,7 +28,6 @@ sim = Simulator(trainnetwork)
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Don't forget to set this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 def terminate_whenStateIsReached(clock, model):
     if model.collector.numTrains == 100:
-      print(model.collector.numTrains)
       return True
     else:
       return False
@@ -37,12 +36,12 @@ sim.setTerminationCondition(terminate_whenStateIsReached)
 #    A termination time is prefered over a termination condition,
 #    as it is much simpler to use.
 #    e.g. to simulate until simulation time 400.0 is reached
-#sim.setTerminationTime(150.0)
+#sim.setTerminationTime(500.0)
 
 # B. Set the use of a tracer to show what happened during the simulation run
 #    Both writing to stdout or file is possible:
 #    pass None for stdout, or a filename for writing to that file
-#sim.setVerbose(None)
+sim.setVerbose(None)
 
 # C. Use Classic DEVS instead of Parallel DEVS
 #    If your model uses Classic DEVS, this configuration MUST be set as
