@@ -1,7 +1,7 @@
 from pypdevs.DEVS import *
 from pypdevs.infinity import INFINITY
 from generator import *
-from Collector import *
+from collector import *
 from railway import *
 
 class TrainNetwork(CoupledDEVS):
