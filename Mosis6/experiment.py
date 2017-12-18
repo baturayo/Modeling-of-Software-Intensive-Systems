@@ -4,7 +4,18 @@ from pypdevs.simulator import Simulator
 # Import the model to be simulated
 from TrainNetwork import *
 
-trainnetwork = TrainNetwork('trainnetwork')
+
+#Initialize train here:
+#TrainNetwork(name, numTracks, trackLength, numTrains, a, iat, vmax)
+#Name = name
+#numTracks = #lights (equivalent to #tracks)
+#trackLength = length of a single track
+#numTrains = The amount of trains to generate
+#a = (a_min, a_max) -> tuple with range for amax for trains
+#iat = (iat_min, iat_max) -> tuple with range for iat 
+#vmax = maximum velocity, used in the formula's
+#!!!!!!!Don't forget to set the correct terminate condition in the next segment!!!!!!!!!
+trainnetwork = TrainNetwork('trainnetwork', 10, 2500, 100, iat = (50,150))
 sim = Simulator(trainnetwork)
 
 # 3. Perform all necessary configurations, the most commonly used are:
@@ -14,8 +25,9 @@ sim = Simulator(trainnetwork)
 #    every simulation step, making it possible to check for certain states
 #    being reached.
 #    It should return True to stop simulation, or Falso to continue.
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Don't forget to set this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 def terminate_whenStateIsReached(clock, model):
-    if model.collector.numTrains == 25:
+    if model.collector.numTrains == 100:
       print(model.collector.numTrains)
       return True
     else:

@@ -56,8 +56,11 @@ class light(AtomicDEVS):
     else:
       return {}
 
+  def __str__(self):
+    return self.name
+
 class railway(AtomicDEVS):
-  def __init__(self, name = "railway", l = 5000):
+  def __init__(self, name = "railway", l = 5000, vmax = 150):
     AtomicDEVS.__init__(self, name)
 
     #Initial state of generator
@@ -97,9 +100,9 @@ class railway(AtomicDEVS):
       return "TrainIn"
     elif inputs.get(self.QUERYRECV) == "red" and self.state == "Query":
       #Calculate next brakepoint for train and return to Nextlight for next query
-      result = brake_formula(self.train.v, 1, self.train.x_remaining)
+      result = brake_formula(self.train.v, 1, self.train.remaining_x)
       self.train.v = result[0]
-      self.train.x_remaining -= result[1]
+      self.train.remaining_x -= result[1]
       return "NextLight"
     elif inputs.get(self.QUERYRECV) == "green" and self.state == "Query":
       return "Accel"
@@ -141,14 +144,17 @@ class railway(AtomicDEVS):
     else:
       return {}
 
+  def __str__(self):
+    return self.name
+
 
 class railwaysegment(CoupledDEVS):
   #Class representing a railway section
-  def __init__(self, name, l = 5000):
+  def __init__(self, name, l = 5000,  v_max = 150):
     #l = length of track
     CoupledDEVS.__init__(self, "system")
-    self.light = self.addSubModel(light())
-    self.railway = self.addSubModel(railway())
+    self.light = self.addSubModel(light("Light" + name))
+    self.railway = self.addSubModel(railway(name, l = l, vmax = v_max))
 
     self.QUERYRECV = self.addInPort(name="QUERYRECV")       #Query towards light
     self.QUERYACKRECV = self.addInPort(name="QUERYACKRECV") #Query Aknowledgement from next light
@@ -164,4 +170,5 @@ class railwaysegment(CoupledDEVS):
     self.connectPorts(self.railway.QUERY, self.QUERYSEND)
     self.connectPorts(self.TRAIN, self.railway.TRAININ)
     self.connectPorts(self.railway.TRAINOUT, self.TRAINOUT)
+
 
