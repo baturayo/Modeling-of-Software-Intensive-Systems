@@ -324,7 +324,7 @@ class WireBlock(BaseBlock):
     def	compute(self, curIteration):
         self.appendToSignal(self.getInputSignal(curIteration, "IN1").value)
 
-class ComputerBlock(BaseBlock):
+class  ComputerBlock(BaseBlock):
     """
     Outputs the desired speeds at a certain time
     """

@@ -63,6 +63,6 @@ class collector(AtomicDEVS):
     else:
       raise DEVSException(\
       "unknown state <%s> in TrafficLight external transition function"\
-      % state) 
+      % self.state)
 
 

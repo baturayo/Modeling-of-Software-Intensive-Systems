@@ -579,6 +579,7 @@ class CBD(BaseBlock):
                 depGraph.setDependency(block, depBlock, curIteration)
 
             del blockcopy[-1]
+
             #If block is a cbd, add subblocks to blockcopy
             if isinstance(block, CBD):
                 blockcopy += list(block.getBlocks())
