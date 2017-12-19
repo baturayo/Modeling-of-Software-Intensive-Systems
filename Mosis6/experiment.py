@@ -27,7 +27,7 @@ def terminate_whenStateIsReached(clock, model):
 
 # Total Length of track is 25,000km and it is FIXED
 totalTrack = 25000
-numTrains = 100
+numTrains = 300
 x1_axis = []
 y1_axis = []
 x2_axis = []
@@ -36,7 +36,7 @@ x3_axis = []
 y3_axis = []
 
 # Simulate Number of Tracks
-for i in tqdm(range(5, 30)):
+for i in tqdm(range(6, 30)):
     x1_axis.append(i)
     x2_axis.append(i)
     x3_axis.append(i)
@@ -46,11 +46,11 @@ for i in tqdm(range(5, 30)):
 
     for j in range(1, 10):
         # =======================
-        # Simulate with fixed set with IAT=(50, 150)
+        # Simulate with fixed set with IAT=(50, 75)
         numTracks = i
         trackLength = int(totalTrack / numTracks)
         trainnetwork = TrainNetwork(name= 'trainnetwork', numTracks=numTracks, trackLength=trackLength,
-                                    numTrains=numTrains, iat=(50, 150))
+                                    numTrains=numTrains, iat=(50, 75))
         sim = Simulator(trainnetwork)
         sim.setTerminationCondition(terminate_whenStateIsReached)
         sim.setClassicDEVS()
@@ -60,11 +60,11 @@ for i in tqdm(range(5, 30)):
         temp_y1.append(trainnetwork.getStatistics())
 
         # =======================
-        # Simulate with fixed set with IAT=(50, 100)
+        # Simulate with fixed set with IAT=(25, 50)
         numTracks = i
         trackLength = int(totalTrack / numTracks)
         trainnetwork = TrainNetwork(name= 'trainnetwork', numTracks=numTracks, trackLength=trackLength,
-                                    numTrains=numTrains, iat=(50, 100))
+                                    numTrains=numTrains, iat=(25, 50))
         sim = Simulator(trainnetwork)
         sim.setTerminationCondition(terminate_whenStateIsReached)
         sim.setClassicDEVS()
@@ -74,11 +74,11 @@ for i in tqdm(range(5, 30)):
         temp_y2.append(trainnetwork.getStatistics())
 
         # =======================
-        # Simulate with fixed set with IAT=(40, 60)
+        # Simulate with fixed set with IAT=(12, 25)
         numTracks = i
         trackLength = int(totalTrack / numTracks)
         trainnetwork = TrainNetwork(name= 'trainnetwork', numTracks=numTracks, trackLength=trackLength,
-                                    numTrains=numTrains, iat=(40, 60))
+                                    numTrains=numTrains, iat=(12, 25))
         sim = Simulator(trainnetwork)
         sim.setTerminationCondition(terminate_whenStateIsReached)
         sim.setClassicDEVS()
@@ -100,7 +100,7 @@ for i in range(len(x1_axis)):
         y=y1_axis[i],
         x=[x1_axis[i]] * len(y1_axis[i]),
         showlegend=a,
-        name='IAT=(50, 150)',
+        name='IAT=(50, 75)',
         marker=dict(
             color='#3D9970'
         )
@@ -110,7 +110,7 @@ for i in range(len(x1_axis)):
         y=y2_axis[i],
         x=[x2_axis[i]] * len(y2_axis[i]),
         showlegend=a,
-        name='IAT=(50, 100)',
+        name='IAT=(25, 50)',
         marker=dict(
             color='#FF4136'
         )
@@ -120,7 +120,7 @@ for i in range(len(x1_axis)):
         y=y3_axis[i],
         x=[x3_axis[i]] * len(y3_axis[i]),
         showlegend=a,
-        name='IAT=(40, 60)',
+        name='IAT=(12, 25)',
         marker=dict(
             color='#FF851B'
         )
@@ -147,4 +147,4 @@ layout = go.Layout(
     )
 )
 fig = dict(data=traces, layout = layout)
-plotly.offline.plot(fig, filename='simulation.html')
+plotly.offline.plot(fig, filename='simulation_'+str(numTrains) +'.html')
