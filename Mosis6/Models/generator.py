@@ -50,7 +50,7 @@ class generator(AtomicDEVS):
 
   def timeAdvance(self):
     #Time advance function:
-    waittime = max(0,self.queue[-1].deptime - self.goneby) if len(self.queue) != 0 else float('inf')
+    waittime = max(0, self.queue[-1].deptime - self.goneby) if len(self.queue) != 0 else float('inf')
     return {"Wait": waittime,
             "Send": 0,
             "Poll": 1,
@@ -68,5 +68,5 @@ class generator(AtomicDEVS):
     else:
       raise DEVSException(\
       "unknown state <%s> in TrafficLight external transition function"\
-      % state) 
+      % self.state)
 generator()

@@ -5,7 +5,7 @@ from collector import *
 from railway import *
 
 class TrainNetwork(CoupledDEVS):
-  def __init__(self, name="trainnetwork", numTracks = 10, trackLength = 2500, numTrains = 10, a = (10, 30), iat = (20, 50), vmax = 150):
+  def __init__(self, name="trainnetwork", numTracks = 10, trackLength = 2500, numTrains = 10, a = (5, 30), iat = (20, 50), vmax = 150):
     CoupledDEVS.__init__(self, "system")
     self.lights = numTracks
 
@@ -43,6 +43,6 @@ class TrainNetwork(CoupledDEVS):
   def getStatistics(self):
     #Returns the statistics needed for optimalisation
     #return (10*self.lights) + self.collector.averageTime
-    print(self.collector.timeSum)
-    print(self.collector.numTrains)
+    # print(self.collector.timeSum)
+    # print(self.collector.numTrains)
     return (10*self.lights) + (self.collector.timeSum / self.collector.numTrains)

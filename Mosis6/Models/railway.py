@@ -64,7 +64,7 @@ class railway(AtomicDEVS):
     AtomicDEVS.__init__(self, name)
 
     #Initial state of generator
-    self.state="Idle"
+    self.state = "Idle"
 
     self.length = l
     #Train
@@ -138,7 +138,7 @@ class railway(AtomicDEVS):
     elif self.state == "Accel":
       return {self.CHANGECOL: "setgreen",
               self.TRAINOUT: self.train}
-      
+
     elif self.state == "NextLight":
       return {self.QUERY: "query"}
     else:
